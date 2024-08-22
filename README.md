@@ -19,9 +19,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Fernanda Ramalho Bezerra
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Organização
+- Conhecimento em Python
+- Conhecimento em HTML e CSS
 
 **Contribuições para o projeto:**
 - xxx
