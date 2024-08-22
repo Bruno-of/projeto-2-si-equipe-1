@@ -63,9 +63,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Matheus Miranda Escorel
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Planejamento e gestão de pessoas
+- Programação em Python
+- Resolução de problemas
 
 **Contribuições para o projeto:**
 - xxx
