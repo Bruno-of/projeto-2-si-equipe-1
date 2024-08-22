@@ -1,12 +1,12 @@
 Prazer, Maria Luísa, mas normalmente me chamam de Malu. 
 
-Sou graduanda em Sistemas de Informação com certificações em HTML, CSS e JavaScript—linguagens c
-om as quais tenho mais facilidade de trabalhar. Após concluir o primeiro período do curso, me
+Sou graduanda em Sistemas de Informação com certificações em HTML, CSS e JavaScript—linguagens 
+com as quais tenho mais facilidade de trabalhar. Após concluir o primeiro período do curso, me
 identifiquei com a área de front-end, onde pretendo me aprofundar ainda mais e acredito que esse 
 projeto contribuirá para esse aprofundamento.
 
 No meu tempo livre, gosto de praticar esportes, especialmente futevôlei. E desde que comecei
-na faculdade, percebo que a área de TI é como o futevôlei, visto que você só será bom em quadra
+na faculdade, percebo que a área de TI é como o futevôlei, visto que você só se sairá bem em quadra
 se treinar constantemente os fundamentos. Além disso, para vencer a partida, a dupla precisa ter
 uma boa comunicação e aplicar os fundamentos que aprendem nos treinos. Acredito que essa situação
 se encaixa perfeitamente na elaboração de um projeto.
