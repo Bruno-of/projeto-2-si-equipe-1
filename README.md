@@ -85,9 +85,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Pedro Augusto Simões Calazans Dutra
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Conhecimento em Python
+- Conhecimento em edição e manipulação de imagem
+- Resolução de Problemas
 
 **Contribuições para o projeto:**
 - xxx
