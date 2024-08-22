@@ -30,9 +30,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Jorge Augusto Lacerda de Vasconelos
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Relações Interpessoais 
+- Conhecimento em Python
+- Raciocínio Lógico
 
 **Contribuições para o projeto:**
 - xxx
