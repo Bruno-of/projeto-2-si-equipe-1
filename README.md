@@ -8,9 +8,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Bruno Oliveira de Macêdo Filho
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Programação em python
+- Conhecimento de Front-End
+- Conhecimento em processos na engenharia de software
 
 **Contribuições para o projeto:**
 - Organização e planejamento geral do projeto.
