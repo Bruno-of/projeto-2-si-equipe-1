@@ -42,7 +42,7 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 ### Luis Filipe Brigido Teles
 **Habilidades:** 
 - Conhecimento em Python
-- Entendimento de banco de dados
+- Raciocínio lógico
 - Conhecimento pratico de GitBash
 
 **Contribuições para o projeto:**
