@@ -52,12 +52,12 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 ### Maria Luisa Albuquerque B. Carvalho
 **Habilidades:** 
-- xxx
-- xxx
-- xxx
+- Conhecimento prático de figma
+- Conhecimento prático de HTML, CSS, JS
+- Designs com Canva
 
 **Contribuições para o projeto:**
-- xxx
+- Sugestão de ideias
 - xxx
 - xxx
 
