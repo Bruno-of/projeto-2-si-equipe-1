@@ -43,7 +43,7 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 **Habilidades:** 
 - Conhecimento em Python
 - Entendimento de banco de dados
-- Conhencimento pratico de GitBash
+- Conhecimento pratico de GitBash
 
 **Contribuições para o projeto:**
 - .
