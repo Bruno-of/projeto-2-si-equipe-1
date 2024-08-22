@@ -1,7 +1,7 @@
 Prazer, Maria Luísa, mas normalmente me chamam de Malu. 
 
-Sou graduanda em Sistemas de Informação com certificações em HTML, CSS e JavaScript—linguagens 
-com as quais tenho mais facilidade de trabalhar. Após concluir o primeiro período do curso, me
+Sou graduanda em Sistemas de Informação com certificação simples em HTML, CSS e JavaScript—linguagens 
+as quais tenho mais facilidade de trabalhar. Após concluir o primeiro período do curso, me
 identifiquei com a área de front-end, onde pretendo me aprofundar ainda mais e acredito que esse 
 projeto contribuirá para esse aprofundamento.
 
