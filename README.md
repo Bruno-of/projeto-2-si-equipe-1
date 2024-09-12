@@ -1,6 +1,6 @@
 # Projetos 02
 
-Este é o repositório do nosso projeto desenvolvido na disciplina de Projetos 02: gestão de projetos. O objetivo do projeto é criar XXXXX com o objetivo de YYYYY.
+Este é o repositório do nosso projeto desenvolvido na disciplina de Projetos 02: gestão de projetos. O objetivo do projeto é desenvolver uma plataforma web com o objetivo de automatizar o processo do FACT, avaliação de desempenho dos alunos entre si, da CESAR School. Queremos facilitar a vida tanto do professor, quanto dos alunos, desde a coleta dos dados até o cálculo das médias e a geração de relatórios consolidados. Essa plataforma substituiria o formulário do Google, tornando o processo mais eficiente e menos suscetível a erros.
 
 ## Apresentação
 
