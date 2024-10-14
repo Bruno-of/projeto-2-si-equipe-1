@@ -14,8 +14,8 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 
 **Contribuições para o projeto:**
 - Organização e planejamento geral do projeto.
-- 
-- 
+- Processos de construção de software e Gitflow.
+- Construção do backlog do produto
 
 ### Fernanda Ramalho Bezerra
 **Habilidades:** 
@@ -24,9 +24,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Conhecimento em HTML e CSS
 
 **Contribuições para o projeto:**
-- xxx
-- xxx
-- xxx
+- Design de slides.
+- Prototipação Lo-fi e mockup.
+- Organização do cronograma.
 
 ### Jorge Augusto Lacerda de Vasconelos
 **Habilidades:** 
@@ -35,9 +35,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Raciocínio Lógico
 
 **Contribuições para o projeto:**
-- xxx
-- xxx
-- xxx
+- Documentação geral do projeto.
+- Geração de hipóteses e dúvidas.
+- Ciclo de vida do projeto.
 
 ### Luis Filipe Brigido Teles
 **Habilidades:** 
@@ -46,9 +46,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Conhecimento pratico de GitBash
 
 **Contribuições para o projeto:**
-- .
-- 
-- 
+- Pesquisa de soluções similares.
+- Documentação geral do projeto.
+- Geração de hipóteses e dúvidas.
 
 ### Maria Luisa Albuquerque B. Carvalho
 **Habilidades:** 
@@ -57,9 +57,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Designs com Canva
 
 **Contribuições para o projeto:**
-- Sugestão de ideias
-- xxx
-- xxx
+- Sugestão de ideias.
+- Design geral do projeto.
+- Prototipação Lo-fi e mockup.
 
 ### Matheus Miranda Escorel
 **Habilidades:** 
@@ -68,20 +68,20 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Resolução de problemas
 
 **Contribuições para o projeto:**
-- xxx
-- xxx
-- xxx
+- Organização e planejamento geral do projeto.
+- Documentação geral do projeto.
+- Construção do backlog do produto
   
 ### Paulo Henrique Egito Inácio da Silva
 **Habilidades:** 
-- Conhecimento em Python
-- Raciocínio lógico
-- xxx
+- Conhecimento em Python.
+- Raciocínio lógico.
+- Resolução de Problemas.
 
 **Contribuições para o projeto:**
-- xxx
-- xxx
-- xxx
+- Pesquisa de soluções similares.
+- Processos de construção de software e Gitflow.
+- Ciclo de vida do projeto.
 
 ### Pedro Augusto Simões Calazans Dutra
 **Habilidades:** 
@@ -90,9 +90,9 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Resolução de Problemas
 
 **Contribuições para o projeto:**
-- xxx
-- xxx
-- xxx
+- Documentação geral do projeto.
+- Pesquisa de soluções similares.
+- Design de slides.
 
 
 ## Como Contribuir
