@@ -3,20 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login de Administrador</title>
+    <title>Preencher Avaliação</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="login-container">
-      <h2>Login</h2>
-      {% if error %}
-        <p style="color: red;">{{ error }}</p>
-      {% endif %}
+    <div class="evaluation-container">
+      <h2>Preencher Avaliação</h2>
+      {% if is_within_period %}
       <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
+        
+        <!-- Exibição dos Detalhes da Avaliação -->
+        <p><strong>Avaliador:</strong> {{ evaluation.evaluator.username }}</p>
+        <p><strong>Critério:</strong> {{ evaluation.criterion.name }}</p>
+        <p><strong>Descrição:</strong> {{ evaluation.criterion.description }}</p>
+        
+        <!-- Campo de Pontuação -->
+        <label for="score">Pontuação:</label>
+        <input type="number" id="score" name="score" min="0" max="{{ evaluation.criterion.max_score }}" required>
+        
+        <!-- Campo de Justificativa -->
+        <label for="justification">Justificativa (opcional):</label>
+        <textarea id="justification" name="justification"></textarea>
+        
+        <!-- Botão de Envio -->
+        <button type="submit">Enviar Avaliação</button>
       </form>
+      {% else %}
+      <p>A avaliação não está disponível no momento. Verifique o período definido pelo avaliador.</p>
+      {% endif %}
     </div>
   </body>
 </html>
@@ -37,11 +52,11 @@
     background: linear-gradient(135deg, #ffee71, #e48315);
   }
 
-  .login-container {
+  .evaluation-container {
     background-color: #fff;
     padding: 2rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -56,10 +71,17 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    text-align: left;
   }
 
+  label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  select,
   input[type="text"],
-  input[type="password"] {
+  textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;

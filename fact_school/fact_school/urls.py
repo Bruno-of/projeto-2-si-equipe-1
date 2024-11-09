@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from usuarios import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
+    path('', views.custom_login, name='login'),
+    path('login/', views.custom_login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('avaliacao/evalProf/', views.make_available, name='evalProf'),
+    path('professor_home/', views.professor_home, name='professor_home'),
+    path('avaliacao/evalAluno/<int:evaluation_id>/', views.fill_evaluation, name='evalAluno'),
 ]
