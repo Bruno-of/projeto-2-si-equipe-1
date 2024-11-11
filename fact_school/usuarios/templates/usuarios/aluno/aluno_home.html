@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página do Aluno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Bem-vindo, {{ user.username }}</h1>
+
+        <!-- Avaliações Disponíveis -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                Avaliações Disponíveis
+            </div>
+            <div class="card-body">
+                {% if available_evaluations %}
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ evaluation.name }} - Disponível até: {{ evaluation.end_date }}
+                            <form method="post" action="{% url 'fill_evaluation' evaluation.id %}"</form> class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-success">Responder</button>
+                            </form>
+                        </li>
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Não há avaliações disponíveis no momento.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                Resultados das Avaliações
+            </div>
+            <div class="card-body">
+                {% if student_responses %}
+                    <ul class="list-group">
+                        {% for response in student_responses %}
+                        <li class="list-group-item">
+                            <strong>{{ response.evaluation }}</strong>: {{ response.score }}/{{ response.criterion.max_score }}
+                            {% if response.comment and response.evaluation.allow_comments %}
+                                <p class="mt-2"><em>Comentário:</em> {{ response.comment }}</p>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Você ainda não tem resultados disponíveis.</p>
+                {% endif %}
+            </div>
+        </div>-->
+
+        <!-- Visualização do Grupo -->
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Meu Grupo
+            </div>
+            <div class="card-body">
+                {% if group_members %}
+                    <ul class="list-group">
+                        {% for member in group_members %}
+                        <li class="list-group-item">{{ member.username }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Você não está atribuído a nenhum grupo no momento.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
