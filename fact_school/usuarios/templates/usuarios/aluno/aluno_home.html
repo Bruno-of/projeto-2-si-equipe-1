@@ -76,3 +76,165 @@
 </body>
 </html>
 
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FACT - Avaliação</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>[EQUIPE 3] - FACT, Fator de Avaliação</h1>
+    <p class="timer">E será encerrada em <span>23 minutos</span>...</p>
+
+    <div class="dropdown-section">
+      <label for="integrantes">Selecione o integrante a ser avaliado:</label>
+      <select id="integrantes">
+        <option value="joao">João</option>
+        <option value="felipe">Felipe</option>
+        <option value="bob">Bob</option>
+        <option value="ana">Ana</option>
+        <option value="marcia">Márcia</option>
+      </select>
+    </div>
+
+    <div class="evaluation-section">
+      <h2>João - Critério 01: Comunicação</h2>
+
+      <div class="score-grid">
+        <div class="score-block">0-10</div>
+        <div class="score-block">11-14</div>
+        <div class="score-block">15-17</div>
+        <div class="score-block">18-20</div>
+      </div>
+
+      <input type="range" min="0" max="20" value="0" class="slider" id="score-range">
+      <div class="score-values">
+        <span>0</span>
+        <span>10</span>
+        <span>14</span>
+        <span>17</span>
+        <span>20</span>
+      </div>
+    </div>
+
+    <div class="justification-section">
+      <label for="justification">Justifique sua avaliação para João:</label>
+      <textarea id="justification" rows="4" placeholder="Digite sua justificativa aqui..."></textarea>
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.container {
+  width: 80%;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.timer {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.dropdown-section {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.hint {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 5px;
+}
+
+.evaluation-section {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin-bottom: 15px;
+}
+
+.score-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.score-block {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  margin: 0 5px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.slider {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.score-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+}
+
+.justification-section {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+</style>
