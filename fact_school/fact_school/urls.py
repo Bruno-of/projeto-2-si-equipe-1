@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from usuarios import views
+from usuarios.views import lista_turmas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('avaliacao/evalProf/', views.make_available, name='evalProf'),
     path('professor_home/', views.professor_home, name='professor_home'),
     path('avaliacao/evalAluno/<int:evaluation_id>/', views.fill_evaluation, name='evalAluno'),
+    path('turmas/', lista_turmas, name='lista_turmas'),
 ]

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Evaluation
+from .models import Evaluation, Turma
 from .forms import EvaluationForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
@@ -95,3 +95,8 @@ def fill_evaluation(request, evaluation_id):
     else:
         form = EvaluationForm(instance=evaluation)
     return render(request, 'usuarios/evalAluno.html', {'form': form, 'evaluation': evaluation, 'is_within_period': True})  
+
+
+def lista_turmas(request):
+    turmas = Turma.objects.prefetch_related('grupos__alunos')
+    return render(request, 'turmas.html', {'turmas': turmas})

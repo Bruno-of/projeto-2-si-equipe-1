@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Criterion, Category, Evaluation
+from .models import Criterion, Category, Evaluation, Turma, Grupo, Aluno
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
@@ -39,3 +39,18 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.unregister(User) 
 admin.site.register(User, CustomUserAdmin) 
+
+@admin.register(Turma)
+class TurmaAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(Grupo)
+class GrupoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'turma')
+    list_filter = ('turma',)
+
+@admin.register(Aluno)
+class AlunoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'grupo')
+    list_filter = ('grupo', 'grupo__turma')
+    search_fields = ('name', 'email')

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turmas e Grupos</title>
+</head>
+<body>
+    <h1>Turmas</h1>
+    {% for turma in turmas %}
+        <h2>{{ turma.nome }}</h2>
+        <ul>
+            {% for grupo in turma.grupos.all %}
+                <li>
+                    <strong>{{ grupo.nome }}</strong>
+                    <ul>
+                        {% for aluno in grupo.alunos.all %}
+                            <li>{{ aluno.nome }} - {{ aluno.email }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
