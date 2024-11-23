@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FACT</title>
+</head>
+
+<body>
+    <h1>Formulário FACT</h1>
+    <button id="voltarBtn" onclick="voltarParaIndex()">Voltar para Página Inicial</button>
+
+
+
+    <div id="formContainer"></div>
+    <button onclick="validarAvaliacoes()">Validar Avaliações</button>
+
+
+    
+    <script>
+        function voltarParaIndex() {
+            if (confirm("Você perderá as informações inseridas. Deseja realmente voltar?")) {
+                window.location.href = "p1FACT.html";
+            }
+        }
+
+        function carregarDados() {
+            const numEquipe = localStorage.getItem("numEquipe");
+            const nomes = JSON.parse(localStorage.getItem("nomes"));
+
+            if (!numEquipe || !nomes) {
+                alert("Dados não encontrados. Redirecionando para a página inicial.");
+                window.location.href = "p1FACT.html";
+                return;
+            }
+
+           
+            const formContainer = document.getElementById("formContainer");
+
+            const equipeInfo = document.createElement("div");
+            equipeInfo.className = "section";
+            equipeInfo.innerHTML = `<p><strong>Número da Equipe:</strong> ${numEquipe}</p>`;
+            formContainer.appendChild(equipeInfo);
+
+
+            nomes.forEach(nome => {
+                const form = criarFormularioAvaliacao(nome);
+                formContainer.appendChild(form);
+            });
+        }
+
+        function criarFormularioAvaliacao(nomeIntegrante) {
+            const form = document.createElement("div");
+            form.className = "formFACT";
+
+            const header = document.createElement("h2");
+            header.textContent = `Avaliação para ${nomeIntegrante}`;
+            form.appendChild(header);
+
+            const skipCheckbox = document.createElement("label");
+            skipCheckbox.className = "skip-label";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.onchange = function () {
+                const inputs = form.querySelectorAll("input[type='range']");
+                inputs.forEach(input => {
+                    input.disabled = checkbox.checked;
+                });
+                if (checkbox.checked) {
+                    form.querySelector(".resultado").textContent = `${nomeIntegrante} foi pulado.`;
+                } else {
+                    form.querySelector(".resultado").textContent = "";
+                }
+            };
+            skipCheckbox.appendChild(checkbox);
+            skipCheckbox.appendChild(document.createTextNode("Sou esse membro (pular avaliação)"));
+            form.appendChild(skipCheckbox);
+
+            const criterios = [
+                {
+                    id: "pensamento",
+                    label: "Pensamento Crítico e Criatividade",
+                    max: 20,
+                    descricao: `
+            0 a 10: Nunca oferece ideias.<br>
+            11 a 14: Oferece ideias básicas.<br>
+            15 a 17: Sugere melhorias.<br>
+            18 a 20: Sempre propõe soluções criativas.`
+                },
+                {
+                    id: "comunicacao",
+                    label: "Comunicação",
+                    max: 20,
+                    descricao: `
+            0 a 10: Não escuta os outros.<br>
+            11 a 14: Escuta ocasionalmente.<br>
+            15 a 17: Escuta com frequência.<br>
+            18 a 20: Sempre escuta e contribui.`
+                },
+                {
+                    id: "colaboracao",
+                    label: "Colaboração",
+                    max: 20,
+                    descricao: `
+            0 a 10: Não ajuda o grupo.<br>
+            11 a 14: Ajuda raramente.<br>
+            15 a 17: Ajuda moderadamente.<br>
+            18 a 20: Ajuda muito e facilita o trabalho.`
+                },
+                {
+                    id: "qualidade",
+                    label: "Qualidade das Entregas",
+                    max: 20,
+                    descricao: `
+            0 a 10: Entregas incompletas.<br>
+            11 a 14: Entregas com muitos erros.<br>
+            15 a 17: Entregas aceitáveis.<br>
+            18 a 20: Entregas impecáveis.`
+                },
+                {
+                    id: "presenca",
+                    label: "Presença",
+                    max: 10,
+                    descricao: `
+            0 a 3: Participação mínima.<br>
+            4 a 6: Presença irregular.<br>
+            7 a 8: Quase sempre presente.<br>
+            9 a 10: Presente e pontual em tudo.`
+                },
+                {
+                    id: "prazos",
+                    label: "Entregas e Prazos",
+                    max: 10,
+                    descricao: `
+            0 a 3: Sempre atrasa.<br>
+            4 a 6: Frequentemente atrasa.<br>
+            7 a 8: Algumas vezes no prazo.<br>
+            9 a 10: Sempre no prazo.`
+                }
+            ];
+
+            criterios.forEach(criterio => {
+                const section = document.createElement("div");
+                section.className = "section";
+
+                const label = document.createElement("label");
+                label.textContent = `Critério: ${criterio.label}`;
+                section.appendChild(label);
+
+                const descricao = document.createElement("p");
+                descricao.innerHTML = criterio.descricao; // add  texto com quebra de linha
+                descricao.style.fontSize = "14px";
+                descricao.style.color = "#555";
+                descricao.style.marginTop = "5px";
+                descricao.style.marginBottom = "10px";
+                section.appendChild(descricao);
+
+                const sliderContainer = document.createElement("div");
+                sliderContainer.className = "slider-container";
+
+                const minLabel = document.createElement("span");
+                minLabel.textContent = "0";
+                sliderContainer.appendChild(minLabel);
+
+                const input = document.createElement("input");
+                input.type = "range";
+                input.id = `${criterio.id}-${nomeIntegrante}`;
+                input.min = 0;
+                input.max = criterio.max;
+                input.value = 0; // cmc no valor zero
+                input.step = 1;
+                input.oninput = function () {
+                    document.getElementById(`${criterio.id}-valor-${nomeIntegrante}`).textContent = input.value;
+                };
+                sliderContainer.appendChild(input);
+
+                const maxLabel = document.createElement("span");
+                maxLabel.textContent = criterio.max;
+                sliderContainer.appendChild(maxLabel);
+
+                section.appendChild(sliderContainer);
+
+                const valorDisplay = document.createElement("div");
+                valorDisplay.className = "valor-display";
+                valorDisplay.innerHTML = `Nota: <span id="${criterio.id}-valor-${nomeIntegrante}">${input.value}</span>`;
+                section.appendChild(valorDisplay);
+
+                form.appendChild(section);
+            });
+
+
+
+            const calcButton = document.createElement("button");
+            calcButton.type = "button";
+            calcButton.textContent = "Calcular Nota";
+            calcButton.onclick = function () {
+                calcularNota(form, nomeIntegrante);
+            };
+            form.appendChild(calcButton);
+
+            const resultado = document.createElement("div");
+            resultado.className = "resultado";
+            form.appendChild(resultado);
+
+            return form;
+        }
+
+        function calcularNota(form, nomeIntegrante) {
+            const sliders = form.querySelectorAll("input[type='range']");
+            let total = 0;
+            sliders.forEach(slider => {
+                total += parseInt(slider.value);
+            });
+            const media = total / 10;
+            form.querySelector(".resultado").textContent = `Nota final para ${nomeIntegrante}: ${media.toFixed(2)}`;
+        }
+
+        function validarAvaliacoes() {
+            const forms = document.querySelectorAll(".formFACT");
+            let allEvaluated = true;
+
+            forms.forEach(form => {
+                const resultado = form.querySelector(".resultado").textContent;
+                if (!resultado.includes("Nota final") && !resultado.includes("foi pulado")) {
+                    allEvaluated = false;
+                }
+            });
+
+            if (allEvaluated) {
+                alert("Todos os membros foram avaliados com sucesso!");
+            } else {
+                alert("Ainda existem membros que não foram avaliados.");
+            }
+        }
+
+        carregarDados();
+    </script>
+</body>
+
+</html>
+<style>
+    .equipe-info {
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+    #voltarBtn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #f44336;
+        /* Vermelho para chamar atenção */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        display: block;
+        margin: 20px auto;
+        max-width: 300px;
+        text-align: center;
+    }
+
+    #voltarBtn:hover {
+        background-color: #d32f2f;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, #ff8810, #ff8810);
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    h1,
+    h2 {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+        font-weight: 300;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .formFACT {
+        background: #fff;
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        text-align: left;
+    }
+
+    .formFACT h2 {
+        margin-bottom: 15px;
+        font-size: 1.3em;
+        color: #333;
+    }
+
+    .formFACT .section {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .formFACT label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .slider-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-container span {
+        font-size: 14px;
+        color: #555;
+    }
+
+    input[type="range"] {
+        appearance: none;
+        width: calc(100% - 60px);
+        height: 8px;
+        background: #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: background 0.3s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #000000;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+        padding: 15px 20px;
+        font-size: 16px;
+        background: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        display: block;
+        margin: 20px auto;
+        max-width: 300px;
+    }
+
+    button:hover {
+        background: #3e8e41;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .resultado {
+        margin-top: 20px;
+        padding: 15px;
+        font-weight: bold;
+        text-align: center;
+        background: #f1f1f1;
+        border-radius: 5px;
+        color: #333;
+    }
+</style>
