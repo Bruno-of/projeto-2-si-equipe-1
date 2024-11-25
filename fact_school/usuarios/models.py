@@ -29,14 +29,18 @@ class Criterion(models.Model):
         return self.name
 
 class Category(models.Model):
-    criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE, related_name="categories", default=1)
-    min_score = models.PositiveIntegerField(default=0)
-    max_score = models.PositiveIntegerField(default=20)
+    criterion = models.ForeignKey(
+        'usuarios.Criterion',  # Substitua pelo nome correto do app, se necessário
+        on_delete=models.CASCADE,
+        null=True,  # Permite valores nulos
+        blank=True  # Permite campos em branco no admin
+    )
+    min_score = models.IntegerField()
+    max_score = models.IntegerField()
     description = models.TextField()
 
     def __str__(self):
-        return f"{self.criterion.name}: {self.min_score}-{self.max_score}%"
-
+        return self.description
 class Evaluation(models.Model):
     evaluator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='evaluations_given')
     evaluated = models.ManyToManyField(User, related_name='evaluations_received')
