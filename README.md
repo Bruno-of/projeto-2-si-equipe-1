@@ -94,6 +94,24 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Pesquisa de soluções similares.
 - Design de slides.
 
+## Como Executar
+Para compilar e executar a aplicação, siga os passos abaixo:
+
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/Bruno-of/projeto-2-si-equipe-1.git
+    ```
+
+2. Acesse o diretório do projeto:
+    ```bash
+    cd fact_school
+    ```
+
+3. Inicie o Servidor do FACT:
+    ```bash
+    python manage.py runserver
+    ```
+
 
 ## Como Contribuir
 
