@@ -388,3 +388,27 @@
         color: #333;
     }
 </style>
+<!--<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder Avaliação FACT</title>
+</head>
+<body>
+    <h1>Responder Avaliação FACT</h1>
+    <p>Avaliação para: {{ avaliacao.turma.nome }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.errors }}
+        </div>
+        {% endfor %}
+        <button type="submit">Enviar Resposta</button>
+    </form>
+    <a href="{% url 'aluno_home' %}">Voltar</a>
+</body>
+</html>-->

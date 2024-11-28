@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Criterion, Category, Evaluation
+from .models import Turma, User
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
+'''
 @admin.register(Criterion)
 class CriterionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'max_score')  
@@ -25,7 +25,7 @@ class EvaluationAdmin(admin.ModelAdmin):
     def get_evaluated(self, obj):
         return ', '.join([user.username for user in obj.evaluated.all()])
     get_evaluated.short_description = 'Avaliados'
-
+'''
 
 User = get_user_model()
 
@@ -37,5 +37,11 @@ class CustomUserAdmin(UserAdmin):
             professor_group, created = Group.objects.get_or_create(name="Professores")
             obj.groups.add(professor_group)
 
-admin.site.unregister(User) 
+@admin.register(Turma)
+class TurmaAdmin(admin.ModelAdmin):
+    list_display = ('name', 'professor')
+    list_filter = ('professor',)
+    search_fields = ('name',)
+    raw_id_fields = ('professor','alunos')
+
 admin.site.register(User, CustomUserAdmin) 

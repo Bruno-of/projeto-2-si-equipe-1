@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -251,4 +251,76 @@ ul li {
     }
 }
 
+</style>-->
+
+<!--Página teste para formulário em django-->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Equipe</title>
+</head>
+
+<body>
+    <h1>Criar Equipe</h1>
+    <h2>Defina a Equipe</h2>
+    <form method="post">
+        <div class="section">
+            
+        {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <button type="submit">Salvar Equipe</button>
+    </form>
+</body>
+
+</html>
+<style>
+    /* Reaproveitar os estilos do p1FACT.html */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, #ff8002, #ff8002);
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    h1, h2 {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+        font-weight: 300;
+    }
+
+    .section {
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        text-align: left;
+    }
+
+    button {
+        display: block;
+        background: #4CAF50;
+        color: #fff;
+        font-size: 16px;
+        padding: 14px 20px;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin: 0 auto;
+        max-width: 300px;
+    }
+
+    button:hover {
+        background: #3e8e41;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 </style>

@@ -20,6 +20,7 @@ class User(AbstractUser):
         help_text='Permissões específicas para este usuário.',
         verbose_name='permissões de usuário'
     )
+    
 class Criterion(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -27,7 +28,7 @@ class Criterion(models.Model):
 
     def __str__(self):
         return self.name
-
+'''
 class Category(models.Model):
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE, related_name="categories")
     min_score = models.PositiveIntegerField()
@@ -51,3 +52,37 @@ class Evaluation(models.Model):
 
     def __str__(self):
         return f"{self.evaluator} -> {self.evaluated} ({self.criterion.name})"
+'''
+
+class Turma(models.Model):
+    name = models.CharField(max_length=100)
+    professor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='turmas')
+    alunos = models.ManyToManyField(User, related_name='turmas_inscritas')
+
+    def __str__(self):
+        return self.name
+
+class Equipe(models.Model):
+    Equipe = models.CharField(max_length=100)
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, related_name='equipes', default=None)
+    integrantes = models.ManyToManyField(User, related_name='equipes')
+    
+    def __str__(self):
+        return f"{self.nome} ({self.turma.name})"
+
+class AvaliacaoFACT(models.Model):
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, default=None) 
+    equipe = models.ForeignKey(Equipe, on_delete=models.CASCADE, null = True, blank = True)
+    inicio = models.DateTimeField()
+    fim = models.DateTimeField()
+
+    def esta_disponivel(self):
+        return self.inicio <= now() <= self.fim
+
+class RespostaFACT(models.Model):
+    avaliacao = models.ForeignKey(AvaliacaoFACT, on_delete=models.CASCADE, related_name='respostas')
+    avaliador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='respostas_dadas')
+    avaliado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='respostas_recebidas')
+    criterio = models.CharField(max_length=100)
+    nota = models.PositiveIntegerField()
+    justificativa = models.TextField(blank = True, null = True)

@@ -24,7 +24,15 @@ urlpatterns = [
     path('', views.custom_login, name='login'),
     path('login/', views.custom_login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('avaliacao/evalProf/', views.make_available, name='evalProf'),
+    ##path('avaliacao/evalProf/', views.make_available, name='evalProf'),
     path('professor_home/', views.professor_home, name='professor_home'),
-    path('avaliacao/evalAluno/<int:evaluation_id>/', views.fill_evaluation, name='evalAluno'),
+    path('aluno_home/', views.aluno_home, name='aluno_home'),
+    ##path('avaliacao/evalAluno/<int:evaluation_id>/', views.fill_evaluation, name='fill_evaluation'),
+    path('configurar_fact/', views.configurar_avaliacao_fact, name='configurar_fact'),
+    path('responder_fact/<int:avaliacao_id>/', views.responder_avaliacao_fact, name='responder_fact'),
+    path('resultados_fact/<int:avaliacao_id>/', views.visualizar_resultados_fact, name='resultados_fact'),
+    path('turmas/', views.listar_turmas, name='listar_turmas'),
+    path('p1FACT/', views.p1FACT, name='p1FACT'), 
+    path('criar_equipe/', views.criar_equipe, name='criar_equipe'),
+
 ]
