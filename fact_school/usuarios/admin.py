@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import Turma, User
+from .models import Turma, User, Criterion
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
-'''
 @admin.register(Criterion)
 class CriterionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'max_score')  
     search_fields = ('name',) 
+'''
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -44,4 +44,4 @@ class TurmaAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     raw_id_fields = ('professor','alunos')
 
-admin.site.register(User, CustomUserAdmin) 
+admin.site.register(User, CustomUserAdmin)

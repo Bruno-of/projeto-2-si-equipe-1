@@ -12,14 +12,18 @@
         <ul>
             <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
             <!--<li><a href="#"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Turmas" /> Minhas turmas</a></li>-->
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" >FACT</a></li>
-            <li><a href="#"><img width="48" height="48" src="https://img.icons8.com/color/48/test-account.png" alt="Meu perfil"> Meu perfil</a></li>
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/settings.png"> Confugurações</a></li>
+            {% for equipe in equipes %}
+        <li>
+            <a href="{% url 'responder_fact' equipe.id %}">
+                <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT">
+                Avaliar Equipe {{ equipe.Equipe }}
+            </a>
+        </li>
+    {% endfor %}
+            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/settings.png"> Configurações</a></li>
             <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/help.png"> Ajuda & Suporte</a></li>
         </ul>
     </div>
-
-
     <!--  principal -->
     <div class="main-content">
         <!-- header -->

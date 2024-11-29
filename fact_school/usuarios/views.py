@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import  AvaliacaoFACT, RespostaFACT, Turma, Equipe  # Ensure you have imported the necessary models
-from .forms import  CriarAvaliacaoFACTForm, ResponderAvaliacaoFACTForm, CriarEquipeForm
+from .models import  AvaliacaoFACT, RespostaFACT, Turma, Equipe, Criterion
+from .forms import  CriarAvaliacaoFACTForm, CriarEquipeForm, ResponderAvaliacaoFACTForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
@@ -57,62 +57,69 @@ def dashboard(request):
 @login_required
 @aluno_required
 def aluno_home(request):
-    avaliacoes_disponiveis=AvaliacaoFACT.objects.filter(
+    '''avaliacoes_disponiveis=AvaliacaoFACT.objects.filter(
         turma__alunos=request.user,
         inicio__lte=now(),
         fim__gte=now()
+    ).distinct()'''
+    avaliacoes_disponiveis = AvaliacaoFACT.objects.filter(
+        avaliado__in=request.user.equipes.values_list('integrantes', flat=True)
     ).distinct()
-    return render(request, 'usuarios/aluno_home.html', {'avaliacoes' : avaliacoes_disponiveis},)
+    equipes = Equipe.objects.filter(integrantes=request.user)
+    return render(request, 'usuarios/aluno_home.html', {'avaliacoes' : avaliacoes_disponiveis, 'equipes':equipes},)
     
 @login_required
 @professor_required
 def professor_home(request):
     return render(request, 'usuarios/professor_home.html')
-
 '''
-@professor_required
 @login_required
-def make_available(request):
-    if request.method == "POST":
-        form = EvaluationForm(request.POST)
-        if form.is_valid():
-            evaluation = form.save(commit=False)
-            evaluation.evaluator = request.user  # Atribuir o avaliador automaticamente
-            evaluation.save()
-            form.save_m2m()
-            messages.success(request, 'Avaliação criada com sucesso!')
-            return redirect('evalProf')  # Redireciona para a lista de avaliações
-    else:
-        form = EvaluationForm()
-    return render(request, 'usuarios/evalProf.html', {'form': form})  
-
-@login_required
-@professor_required
-def eval_results(request):
-    evaluations = Evaluation.objects.filter(evaluator=request.user)
-    return render(request, 'usuarios/evalResults.html', {'evaluations': evaluations})
-
 @aluno_required
-@login_required
-def fill_evaluation(request, evaluation_id):
-    evaluation = get_object_or_404(Evaluation, id=evaluation_id)
-    if not evaluation.is_available():
-        return render(request, 'usuarios/evalAluno.html', {'evaluation': evaluation, 'is_within_period': False})
-    
+def responder_fact(request, equipe_id):
+    equipe = get_object_or_404(Equipe, id=equipe_id)
+    avaliados = equipe.integrantes.exclude(id=request.user.id)
+    criterios = Criterion.objects.all()
     if request.method == "POST":
-        form = EvaluationForm(request.POST, instance=evaluation)
+        form = CriarAvaliacaoFACTForm(request.POST, avaliados=avaliados)
         if form.is_valid():
-            form.save()
-            return redirect('success_page')  # Redireciona após preenchimento
+            for avaliado in avaliados:
+                justificativa = form.cleaned_dataf('justificativa_{avaliado.id}')
+                for criterio in criterios:
+                    nota = form.cleaned_data(f'nota_{avaliado.id}_{criterio.id}')
+                    AvaliacaoFACT.objects.create(
+                        avaliador=request.user,
+                        avaliado=avaliado,
+                        criterio=criterio,
+                        nota=nota,
+                        justificativa=justificativa,
+                    )
+            return redirect('aluno_home')
     else:
-        form = EvaluationForm(instance=evaluation)
-    return render(request, 'usuarios/evalAluno.html', {'form': form, 'evaluation': evaluation, 'is_within_period': True}) 
+        form = CriarAvaliacaoFACTForm(avaliados=avaliados)
+    return render(request, 'usuarios/responder_fact.html', {'form': form, 'equipe': equipe})
 '''
-
-
-
-def p1FACT(request):
-    return render(request, 'aluno/p1FACT.html')  # Certifique-se de que o arquivo HTML está na pasta correta
+#responder_fact TESTE
+def responder_fact(request, equipe_id):
+    criterios = Criterion.objects.all()  # Busca todos os critérios
+    equipe = get_object_or_404(Equipe, id=equipe_id)
+    integrantes = equipe.integrantes.exclude(id=request.user.id)
+    if request.method == "POST":
+        for integrante in integrantes:
+            for criterio in criterios:
+                nota = request.POST.get(f'nota_{integrante.id}_{criterio.id}')
+                justificativa = request.POST.get(f'justificativa_{integrante.id}')
+                
+                if nota:
+                    AvaliacaoFACT.objects.create(
+                        avaliador=request.user,
+                        avaliado=integrante,
+                        criterio=criterio,
+                        nota=nota,
+                        justificativa=justificativa,
+                    )
+        return redirect('aluno_home')
+    
+    return render(request, 'usuarios/responder_fact.html', {'equipe': integrantes, 'criterios': criterios})
 
 @login_required
 @professor_required

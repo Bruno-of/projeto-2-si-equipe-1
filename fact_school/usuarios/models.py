@@ -1,6 +1,8 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
+from django.contrib.auth import get_user_model
 
 class User(AbstractUser):
     is_adm = models.BooleanField(default=False)
@@ -28,31 +30,7 @@ class Criterion(models.Model):
 
     def __str__(self):
         return self.name
-'''
-class Category(models.Model):
-    criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE, related_name="categories")
-    min_score = models.PositiveIntegerField()
-    max_score = models.PositiveIntegerField()
-    description = models.TextField()
 
-    def __str__(self):
-        return f"{self.criterion.name}: {self.min_score}-{self.max_score}%"
-
-class Evaluation(models.Model):
-    evaluator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='evaluations_given')
-    evaluated = models.ManyToManyField(User, related_name='evaluations_received')
-    criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
-    score = models.PositiveIntegerField()
-    justification = models.TextField(blank=True, null=True)
-    start_date = models.DateTimeField()  
-    end_date = models.DateTimeField() 
-
-    def is_available(self):
-        return self.start_date <= now() <= self.end_date
-
-    def __str__(self):
-        return f"{self.evaluator} -> {self.evaluated} ({self.criterion.name})"
-'''
 
 class Turma(models.Model):
     name = models.CharField(max_length=100)
@@ -64,20 +42,29 @@ class Turma(models.Model):
 
 class Equipe(models.Model):
     Equipe = models.CharField(max_length=100)
-    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, related_name='equipes', default=None)
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, related_name='equipes')
     integrantes = models.ManyToManyField(User, related_name='equipes')
     
     def __str__(self):
-        return f"{self.nome} ({self.turma.name})"
+        if self.turma:
+            return f"{self.Equipe} ({self.turma.name})"
+        return f"{self.Equipe} (Sem turma)"
 
+User = get_user_model()
 class AvaliacaoFACT(models.Model):
-    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, default=None) 
-    equipe = models.ForeignKey(Equipe, on_delete=models.CASCADE, null = True, blank = True)
-    inicio = models.DateTimeField()
-    fim = models.DateTimeField()
+    avaliador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='fact_avaliacoes_feitas', default=None) 
+    avaliado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='fact_avaliacoes_recebidas', default=None)
+    criterio = models.ForeignKey(Criterion, on_delete=models.CASCADE, default=None)
+    nota = models.PositiveIntegerField(default=0)
+    justificativa = models.TextField(blank = True, null = True, default=None)
+    #inicio = models.DateTimeField()
+    #fim = models.DateTimeField()
 
-    def esta_disponivel(self):
-        return self.inicio <= now() <= self.fim
+    #def esta_disponivel(self):
+        #return self.inicio <= now() <= self.fim
+
+    def __call__(self):
+        return f"{self.avaliador.username} -> {self.avaliado.username}: {self.criterio.name} ({self.nota})"
 
 class RespostaFACT(models.Model):
     avaliacao = models.ForeignKey(AvaliacaoFACT, on_delete=models.CASCADE, related_name='respostas')
