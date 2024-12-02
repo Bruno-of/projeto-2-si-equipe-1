@@ -9,431 +9,202 @@
 </head>
 
 <body>
-    <header class="text-white py-3 mb-4">
-        <div class="container text-center">
-            <h1>Avaliação FACT</h1>
+    <div class="d-flex vh-100">
+        <!-- Sidebar -->
+        <div class="sidebar bg-primary text-white p-4">
+            <h2 class="mb-4">FACT School</h2>
+            <ul class="list-unstyled">
+                <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home"
+                            class="me-2" />
+                        Home
+                    </a></li>
+                <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png"
+                            alt="Equipe" class="me-2" />
+                        Minha equipe
+                    </a></li>
+                    <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li>
+                {% for equipe in equipes %}
+                <li class="mb-3">
+                    <a href="{% url 'responder_fact' equipe.id %}"
+                        class="text-white text-decoration-none d-flex align-items-center">
+                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT"
+                            class="me-2" />
+                        Avaliar Equipe {{ equipe.Equipe }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-    </header>
-    <form method="post">
-        {% csrf_token %}
-        
-        {% for avaliado in equipe %}
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h2>{{ avaliado.username }}</h2>
-            </div>
-            <div class="card-body">
-                {% for criterio in criterios %}
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <strong>{{ criterio.name }}</strong> 
-                        <p class="text-muted">{{ criterio.description }}</p> 
+
+        <!-- Main Content -->
+        <div class="flex-grow-1 p-4">
+            <header class="text-center mb-4">
+                <h1 class="fw-bold">Avaliação FACT</h1>
+            </header>
+            <form method="post">
+                {% csrf_token %}
+                {% for avaliado in equipe %}
+                <div class="card mb-4 shadow border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0 text-center">{{ avaliado.username }}</h2>
                     </div>
-                    <div class="col-md-6">
-                        <label for="nota_{{ avaliado.id }}_{{ criterio.id }}">Nota</label>
-                        <input type="range" name="nota_{{ avaliado.id }}_{{ criterio.id }}" 
-                            id="nota_{{ avaliado.id }}_{{ criterio.id }}" 
-                            min="0" max="{{ criterio.max_score }}" step="1" 
-                            value="0" class="form-range" 
-                            oninput="document.getElementById('nota_display_{{ avaliado.id }}_{{ criterio.id }}').innerText = this.value">
-                        <span>Nota: <span id="nota_display_{{ avaliado.id }}_{{ criterio.id }}">0</span></span>
+                    <div class="card-body">
+                        {% for criterio in criterios %}
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5 class="fw-bold">{{ criterio.name }}</h5>
+                                <p class="text-muted small">{{ criterio.description }}</p>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center">
+                                <input type="range" name="nota_{{ avaliado.id }}_{{ criterio.id }}"
+                                    id="nota_{{ avaliado.id }}_{{ criterio.id }}" min="0" max="{{ criterio.max_score }}"
+                                    step="1" value="0" class="form-range me-3"
+                                    oninput="document.getElementById('nota_display_{{ avaliado.id }}_{{ criterio.id }}').innerText = this.value">
+                                <span class="badge bg-primary p-2">Nota: <span
+                                        id="nota_display_{{ avaliado.id }}_{{ criterio.id }}">0</span></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="justificativa_{{ avaliado.id }}" class="form-label">Justificativa</label>
+                                <textarea name="justificativa_{{ avaliado.id }}" id="justificativa_{{ avaliado.id }}"
+                                    rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="justificativa_{{ avaliado.id }}">Justificativa</label>
-                        <textarea name="justificativa_{{ avaliado.id }}" 
-                                  id="justificativa_{{ avaliado.id }}" 
-                                  rows="3" class="form-control"></textarea>
-                    </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Enviar Avaliação</button>
+                    <a href="{% url 'aluno_home' %}" class="btn btn-secondary">Voltar</a>
                 </div>
-            </div>
+            </form>
         </div>
-        {% endfor %}
-        
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">Enviar Avaliação</button>
-            <button class="btn "> <a href="{% url 'aluno_home' %}" >Voltar</a></button>
-        </div>
-    </form>
-        
-<!--
-
-    <div id="formContainer"></div>
-    <button onclick="validarAvaliacoes()">Validar Avaliações</button>
-
-
-    
-    <script>
-        function voltarParaIndex() {
-            if (confirm("Você perderá as informações inseridas. Deseja realmente voltar?")) {
-                window.location.href = "p1FACT.html";
-            }
-        }
-
-        function carregarDados() {
-            const numEquipe = localStorage.getItem("numEquipe");
-            const nomes = JSON.parse(localStorage.getItem("nomes"));
-
-            if (!numEquipe || !nomes) {
-                alert("Dados não encontrados. Redirecionando para a página inicial.");
-                window.location.href = "p1FACT.html";
-                return;
-            }
-
-           
-            const formContainer = document.getElementById("formContainer");
-
-            const equipeInfo = document.createElement("div");
-            equipeInfo.className = "section";
-            equipeInfo.innerHTML = `<p><strong>Número da Equipe:</strong> ${numEquipe}</p>`;
-            formContainer.appendChild(equipeInfo);
-
-
-            nomes.forEach(nome => {
-                const form = criarFormularioAvaliacao(nome);
-                formContainer.appendChild(form);
-            });
-        }
-
-        function criarFormularioAvaliacao(nomeIntegrante) {
-            const form = document.createElement("div");
-            form.className = "formFACT";
-
-            const header = document.createElement("h2");
-            header.textContent = `Avaliação para ${nomeIntegrante}`;
-            form.appendChild(header);
-
-            const skipCheckbox = document.createElement("label");
-            skipCheckbox.className = "skip-label";
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.onchange = function () {
-                const inputs = form.querySelectorAll("input[type='range']");
-                inputs.forEach(input => {
-                    input.disabled = checkbox.checked;
-                });
-                if (checkbox.checked) {
-                    form.querySelector(".resultado").textContent = `${nomeIntegrante} foi pulado.`;
-                } else {
-                    form.querySelector(".resultado").textContent = "";
-                }
-            };
-            skipCheckbox.appendChild(checkbox);
-            skipCheckbox.appendChild(document.createTextNode("Sou esse membro (pular avaliação)"));
-            form.appendChild(skipCheckbox);
-
-            const criterios = [
-                {
-                    id: "pensamento",
-                    label: "Pensamento Crítico e Criatividade",
-                    max: 20,
-                    descricao: `
-            0 a 10: Nunca oferece ideias.<br>
-            11 a 14: Oferece ideias básicas.<br>
-            15 a 17: Sugere melhorias.<br>
-            18 a 20: Sempre propõe soluções criativas.`
-                },
-                {
-                    id: "comunicacao",
-                    label: "Comunicação",
-                    max: 20,
-                    descricao: `
-            0 a 10: Não escuta os outros.<br>
-            11 a 14: Escuta ocasionalmente.<br>
-            15 a 17: Escuta com frequência.<br>
-            18 a 20: Sempre escuta e contribui.`
-                },
-                {
-                    id: "colaboracao",
-                    label: "Colaboração",
-                    max: 20,
-                    descricao: `
-            0 a 10: Não ajuda o grupo.<br>
-            11 a 14: Ajuda raramente.<br>
-            15 a 17: Ajuda moderadamente.<br>
-            18 a 20: Ajuda muito e facilita o trabalho.`
-                },
-                {
-                    id: "qualidade",
-                    label: "Qualidade das Entregas",
-                    max: 20,
-                    descricao: `
-            0 a 10: Entregas incompletas.<br>
-            11 a 14: Entregas com muitos erros.<br>
-            15 a 17: Entregas aceitáveis.<br>
-            18 a 20: Entregas impecáveis.`
-                },
-                {
-                    id: "presenca",
-                    label: "Presença",
-                    max: 10,
-                    descricao: `
-            0 a 3: Participação mínima.<br>
-            4 a 6: Presença irregular.<br>
-            7 a 8: Quase sempre presente.<br>
-            9 a 10: Presente e pontual em tudo.`
-                },
-                {
-                    id: "prazos",
-                    label: "Entregas e Prazos",
-                    max: 10,
-                    descricao: `
-            0 a 3: Sempre atrasa.<br>
-            4 a 6: Frequentemente atrasa.<br>
-            7 a 8: Algumas vezes no prazo.<br>
-            9 a 10: Sempre no prazo.`
-                }
-            ];
-
-            criterios.forEach(criterio => {
-                const section = document.createElement("div");
-                section.className = "section";
-
-                const label = document.createElement("label");
-                label.textContent = `Critério: ${criterio.label}`;
-                section.appendChild(label);
-
-                const descricao = document.createElement("p");
-                descricao.innerHTML = criterio.descricao; // add  texto com quebra de linha
-                descricao.style.fontSize = "14px";
-                descricao.style.color = "#555";
-                descricao.style.marginTop = "5px";
-                descricao.style.marginBottom = "10px";
-                section.appendChild(descricao);
-
-                const sliderContainer = document.createElement("div");
-                sliderContainer.className = "slider-container";
-
-                const minLabel = document.createElement("span");
-                minLabel.textContent = "0";
-                sliderContainer.appendChild(minLabel);
-
-                const input = document.createElement("input");
-                input.type = "range";
-                input.id = `${criterio.id}-${nomeIntegrante}`;
-                input.min = 0;
-                input.max = criterio.max;
-                input.value = 0; // cmc no valor zero
-                input.step = 1;
-                input.oninput = function () {
-                    document.getElementById(`${criterio.id}-valor-${nomeIntegrante}`).textContent = input.value;
-                };
-                sliderContainer.appendChild(input);
-
-                const maxLabel = document.createElement("span");
-                maxLabel.textContent = criterio.max;
-                sliderContainer.appendChild(maxLabel);
-
-                section.appendChild(sliderContainer);
-
-                const valorDisplay = document.createElement("div");
-                valorDisplay.className = "valor-display";
-                valorDisplay.innerHTML = `Nota: <span id="${criterio.id}-valor-${nomeIntegrante}">${input.value}</span>`;
-                section.appendChild(valorDisplay);
-
-                form.appendChild(section);
-            });
-
-
-
-            const calcButton = document.createElement("button");
-            calcButton.type = "button";
-            calcButton.textContent = "Calcular Nota";
-            calcButton.onclick = function () {
-                calcularNota(form, nomeIntegrante);
-            };
-            form.appendChild(calcButton);
-
-            const resultado = document.createElement("div");
-            resultado.className = "resultado";
-            form.appendChild(resultado);
-
-            return form;
-        }
-
-        function calcularNota(form, nomeIntegrante) {
-            const sliders = form.querySelectorAll("input[type='range']");
-            let total = 0;
-            sliders.forEach(slider => {
-                total += parseInt(slider.value);
-            });
-            const media = total / 10;
-            form.querySelector(".resultado").textContent = `Nota final para ${nomeIntegrante}: ${media.toFixed(2)}`;
-        }
-
-        function validarAvaliacoes() {
-            const forms = document.querySelectorAll(".formFACT");
-            let allEvaluated = true;
-
-            forms.forEach(form => {
-                const resultado = form.querySelector(".resultado").textContent;
-                if (!resultado.includes("Nota final") && !resultado.includes("foi pulado")) {
-                    allEvaluated = false;
-                }
-            });
-
-            if (allEvaluated) {
-                alert("Todos os membros foram avaliados com sucesso!");
-            } else {
-                alert("Ainda existem membros que não foram avaliados.");
-            }
-        }
-
-        carregarDados();
-    </script>-->
+    </div>
 </body>
 
-</html>
+
+
 <style>
-    .equipe-info {
-    padding: 15px;
-    background: #fff;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
 
-    #voltarBtn {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #f44336;
-        /* Vermelho para chamar atenção */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        display: block;
-        margin: 20px auto;
-        max-width: 300px;
-        text-align: center;
-    }
-
-    #voltarBtn:hover {
-        background-color: #d32f2f;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(to bottom, #ff8810, #ff8810);
-        margin: 0;
-        padding: 0;
-        color: #333;
-    }
-
-    h1,
-    h2 {
-        text-align: center;
-        color: #fff;
-        margin-bottom: 20px;
-        font-weight: 300;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .formFACT {
-        background: #fff;
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        max-width: 700px;
-        text-align: left;
-    }
-
-    .formFACT h2 {
-        margin-bottom: 15px;
-        font-size: 1.3em;
-        color: #333;
-    }
-
-    .formFACT .section {
-        margin-bottom: 30px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .formFACT label {
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .slider-container {
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: #1e1e5a !important;
+        color: #e7e7e7;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+
+    .sidebar h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        margin: 1rem 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #dadada !important;
+        font-size: 1rem;
+        display: flex;
         align-items: center;
-        margin-top: 10px;
-        padding: 10px;
-        background: #f9f9f9;
+        gap: 0.5rem;
+        padding: 0.5rem;
         border-radius: 5px;
-        box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .slider-container span {
-        font-size: 14px;
-        color: #555;
-    }
-
-    input[type="range"] {
-        appearance: none;
-        width: calc(100% - 60px);
-        height: 8px;
-        background: #ddd;
-        border-radius: 5px;
-        outline: none;
         transition: background 0.3s;
     }
 
-    input[type="range"]::-webkit-slider-thumb {
-        appearance: none;
+    .sidebar ul li a:hover {
+        background: #f06115;
+    }
+
+    .sidebar ul li a img {
         width: 20px;
         height: 20px;
-        background: #000000;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .card-header {
+        font-size: 1.2rem;
+        text-align: center;
+        background: #f06115 !important; 
+        /* Azul atual */
+        color: #fff;
+    }
+
+    .form-range {
+        width: 70%;
+        height: 10px;
+        background-color: #d0cdcd;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .form-range::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        background: #f86824 !important;
+        border-radius: 500%;
+        cursor: pointer;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        background-color: #f86824 !important;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    .form-range::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        background: #f86824ff;
         border-radius: 50%;
         cursor: pointer;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
+    .form-range:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(144, 156, 170, 0.5);
+    }
+
+
+
     button {
-        padding: 15px 20px;
+        padding: 10px 20px;
         font-size: 16px;
-        background: #4CAF50;
-        color: #fff;
-        border: none;
         border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s ease, box-shadow 0.3s ease;
-        display: block;
-        margin: 20px auto;
-        max-width: 300px;
+        margin: 10px 5px;
     }
 
     button:hover {
-        background: #3e8e41;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #3e8e41;
     }
-
-    .resultado {
-        margin-top: 20px;
-        padding: 15px;
-        font-weight: bold;
-        text-align: center;
-        background: #f1f1f1;
-        border-radius: 5px;
-        color: #333;
-    }
-    
 </style>
 
+</html>

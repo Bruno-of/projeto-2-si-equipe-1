@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aluno - Página Inicial</title>
-  </head>
-  <body>
-    
+</head>
+
+<body>
+
     <div class="sidebar">
         <h2>FACT School</h2>
         <ul>
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
-            <!--<li><a href="#"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Turmas" /> Minhas turmas</a></li>-->
+            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png"
+                        alt="Home" /> Home</a></li>
+            <li><a href="#"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png"
+                        alt="Equipe" /> Minha equipe</a></li>
             {% for equipe in equipes %}
-        <li>
-            <a href="{% url 'responder_fact' equipe.id %}">
-                <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT">
-                Avaliar Equipe {{ equipe.Equipe }}
-            </a>
-        </li>
-    {% endfor %}
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/settings.png"> Configurações</a></li>
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/help.png"> Ajuda & Suporte</a></li>
+            <li>
+                <a href="{% url 'responder_fact' equipe.id %}">
+                    <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT">
+                    Avaliar Equipe {{ equipe.Equipe }}
+                </a>
+            </li>
+            {% endfor %}
+            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li>
         </ul>
     </div>
     <!--  principal -->
@@ -29,19 +32,18 @@
         <!-- header -->
         <div class="header">
             <h1>Olá, Aluno(a) {{ user.username }}</h1>
-            
-            <div class="profile">
-                <span>Nome do aluno</span>
-                <img src="" alt="" />
-            </div>
+
+
         </div>
 
         <!-- bem vindo prof -->
         <div class="banner">
             <div>
                 <h2>Seja bem-vindo (a)!</h2>
-                <p></p>
-                <button>Visualizar FACT</button>
+
+                <<a href="% url 'verFACT.html' %" class="btn btn-primary">Visualizar FACT</a>
+
+
             </div>
 
         </div>
@@ -66,10 +68,10 @@
             </div>
         </div>
     </div>
-  </body>
+</body>
+
 </html>
 <style>
-
     * {
         margin: 0;
         padding: 0;
