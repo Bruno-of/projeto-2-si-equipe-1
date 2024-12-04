@@ -8,85 +8,113 @@
     <title>FACT</title>
 </head>
 
-<body>
-    <div class="d-flex vh-100">
-        <!-- Sidebar -->
-        <div class="sidebar bg-primary text-white p-4">
-            <h2 class="mb-4">FACT School</h2>
-            <ul class="list-unstyled">
-                <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
-                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home"
-                            class="me-2" />
-                        Home
-                    </a></li>
-                <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
-                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png"
-                            alt="Equipe" class="me-2" />
-                        Minha equipe
-                    </a></li>
-                    <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li>
-                {% for equipe in equipes %}
-                <li class="mb-3">
-                    <a href="{% url 'responder_fact' equipe.id %}"
-                        class="text-white text-decoration-none d-flex align-items-center">
-                        <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT"
-                            class="me-2" />
-                        Avaliar Equipe {{ equipe.Equipe }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-grow-1 p-4">
-            <header class="text-center mb-4">
-                <h1 class="fw-bold">Avaliação FACT</h1>
-            </header>
-            <form method="post">
-                {% csrf_token %}
-                {% for avaliado in equipe %}
-                <div class="card mb-4 shadow border-0">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0 text-center">{{ avaliado.username }}</h2>
-                    </div>
-                    <div class="card-body">
-                        {% for criterio in criterios %}
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h5 class="fw-bold">{{ criterio.name }}</h5>
-                                <p class="text-muted small">{{ criterio.description }}</p>
-                            </div>
-                            <div class="col-md-6 d-flex align-items-center">
-                                <input type="range" name="nota_{{ avaliado.id }}_{{ criterio.id }}"
-                                    id="nota_{{ avaliado.id }}_{{ criterio.id }}" min="0" max="{{ criterio.max_score }}"
-                                    step="1" value="0" class="form-range me-3"
-                                    oninput="document.getElementById('nota_display_{{ avaliado.id }}_{{ criterio.id }}').innerText = this.value">
-                                <span class="badge bg-primary p-2">Nota: <span
-                                        id="nota_display_{{ avaliado.id }}_{{ criterio.id }}">0</span></span>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="justificativa_{{ avaliado.id }}" class="form-label">Justificativa</label>
-                                <textarea name="justificativa_{{ avaliado.id }}" id="justificativa_{{ avaliado.id }}"
-                                    rows="3" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success">Enviar Avaliação</button>
-                    <a href="{% url 'aluno_home' %}" class="btn btn-secondary">Voltar</a>
-                </div>
-            </form>
-        </div>
+<div class="d-flex vh-100">
+    <!-- Sidebar -->
+    <div class="sidebar bg-primary text-white p-4">
+        <h2 class="mb-4">FACT School</h2>
+        <ul class="list-unstyled">
+            <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                    <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home"
+                        class="me-2" />
+                    Home
+                </a></li>
+            <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                    <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png"
+                        alt="Equipe" class="me-2" />
+                    Minha equipe
+                </a></li>
+            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit" /> Sair </a></li>
+            {% for equipe in equipes %}
+            <li class="mb-3">
+                <a href="{% url 'responder_fact' equipe.id %}"
+                    class="text-white text-decoration-none d-flex align-items-center">
+                    <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT"
+                        class="me-2" />
+                    Avaliar Equipe {{ equipe.Equipe }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
-</body>
 
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+        <header class="text-center mb-4">
+            <h1 class="fw-bold">Avaliação FACT</h1>
+        </header>
+        <form method="post" id="avaliacaoForm">
+            {% csrf_token %}
+            {% for avaliado in equipe %}
+            <div class="card mb-4 shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center">{{ avaliado.username }}</h2>
+                </div>
+                <div class="card-body">
+                    {% for criterio in criterios %}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold">{{ criterio.name }}</h5>
+                            <p class="text-muted small">{{ criterio.description }}</p>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input type="range" name="nota_{{ avaliado.id }}_{{ criterio.id }}"
+                                id="nota_{{ avaliado.id }}_{{ criterio.id }}" min="0" max="{{ criterio.max_score }}"
+                                step="1" value="0" class="form-range required-field" 
+                                oninput="document.getElementById('nota_display_{{ avaliado.id }}_{{ criterio.id }}').innerText = this.value">
+                            <span class="badge bg-primary p-2">Nota: <span
+                                    id="nota_display_{{ avaliado.id }}_{{ criterio.id }}">0</span></span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="justificativa_{{ avaliado.id }}" class="form-label">Justificativa</label>
+                            <textarea name="justificativa_{{ avaliado.id }}" id="justificativa_{{ avaliado.id }}"
+                                rows="3" class="form-control required-field"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="text-center">
+                <button type="submit" class="btn btn-success" id="submitButton" disabled>Enviar Avaliação</button>
+                <a href="{% url 'aluno_home' %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('avaliacaoForm');
+        const submitButton = document.getElementById('submitButton');
+
+        // Function to check if all required fields are filled
+        function isFormComplete() {
+            const requiredFields = form.querySelectorAll('.required-field');
+            for (let field of requiredFields) {
+                // For ranges, ensure value is not "0"
+                if (field.type === 'range' && field.value === '0') {
+                    return false;
+                }
+                // For textareas, ensure they're not empty
+                if (field.tagName === 'TEXTAREA' && field.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Add an event listener to monitor changes in the form
+        form.addEventListener('input', function () {
+            if (isFormComplete()) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+    });
+</script> 
 
 <style>
 
