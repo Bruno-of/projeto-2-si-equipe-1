@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Avaliações</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Avaliações da Turma {{ turma.name }}</h1>
+        
+        <h2>Médias Finais</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Média</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno_avaliacoes in alunos_avaliacoes %}
+                <tr>
+                    <td>{{ aluno_avaliacoes.aluno.username }}</td>
+                    <td>{{ aluno_avaliacoes.media|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Avaliações Individuais</h2>
+        {% for equipe in equipes %}
+        <h3>Equipe: {{ equipe.name }}</h3>
+        {% for integrante in equipe.integrantes.all %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2>Avaliações de {{ integrante.username }}</h2>
+            </div>
+            <div class="card-body">
+                {% for aluno_avaliacoes in alunos_avaliacoes %}
+                    {% if aluno_avaliacoes.aluno == integrante %}
+                        <h4>Aluno Avaliado: {{ aluno_avaliacoes.aluno_avaliado}}</h4>
+                        <h5>Critérios e Notas</h5>
+                        <div>
+                            {% for item in aluno_avaliacoes.criterios_e_notas %}
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <strong>{{ item.criterio.name }}</strong>
+                                        <p class="text-muted">{{ item.criterio.description }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p><strong>Nota:</strong> {{ item.nota }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <div>
+                            <strong>Justificativa:</strong>
+                            <p>{{ aluno_avaliacoes.justificativas }}</p>
+                        </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+
+    </div>
+</body>
+</html>

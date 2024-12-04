@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.utils.timezone import now
+from django.db import models
+import logging
 
 User = get_user_model()
 
@@ -71,45 +73,24 @@ def aluno_home(request):
 @login_required
 @professor_required
 def professor_home(request):
-    return render(request, 'usuarios/professor_home.html')
-'''
-@login_required
-@aluno_required
-def responder_fact(request, equipe_id):
-    equipe = get_object_or_404(Equipe, id=equipe_id)
-    avaliados = equipe.integrantes.exclude(id=request.user.id)
-    criterios = Criterion.objects.all()
-    if request.method == "POST":
-        form = CriarAvaliacaoFACTForm(request.POST, avaliados=avaliados)
-        if form.is_valid():
-            for avaliado in avaliados:
-                justificativa = form.cleaned_dataf('justificativa_{avaliado.id}')
-                for criterio in criterios:
-                    nota = form.cleaned_data(f'nota_{avaliado.id}_{criterio.id}')
-                    AvaliacaoFACT.objects.create(
-                        avaliador=request.user,
-                        avaliado=avaliado,
-                        criterio=criterio,
-                        nota=nota,
-                        justificativa=justificativa,
-                    )
-            return redirect('aluno_home')
-    else:
-        form = CriarAvaliacaoFACTForm(avaliados=avaliados)
-    return render(request, 'usuarios/responder_fact.html', {'form': form, 'equipe': equipe})
-'''
+    turmas = Turma.objects.filter(professor=request.user)
+    return render(request, 'usuarios/professor_home.html', {'turmas': turmas})
+
+
 #responder_fact TESTE
 def responder_fact(request, equipe_id):
-    criterios = Criterion.objects.all()  # Busca todos os critérios
+    criterios = Criterion.objects.all() 
     equipe = get_object_or_404(Equipe, id=equipe_id)
     integrantes = equipe.integrantes.exclude(id=request.user.id)
     if request.method == "POST":
         for integrante in integrantes:
+            justificativa = request.POST.get(f'justificativa_{integrante.id}')
+            fact ={}
             for criterio in criterios:
                 nota = request.POST.get(f'nota_{integrante.id}_{criterio.id}')
-                justificativa = request.POST.get(f'justificativa_{integrante.id}')
-                
-                if nota:
+                fact[criterio] = nota
+            if fact:
+                for criterio, nota in fact.items():    
                     AvaliacaoFACT.objects.create(
                         avaliador=request.user,
                         avaliado=integrante,
@@ -121,17 +102,7 @@ def responder_fact(request, equipe_id):
     
     return render(request, 'usuarios/responder_fact.html', {'equipe': integrantes, 'criterios': criterios})
 
-@login_required
-@professor_required
-def configurar_avaliacao_fact(request):
-    if request.method == "POST":
-        form = CriarAvaliacaoFACTForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('professor_home')
-    else:
-        form = CriarAvaliacaoFACTForm()
-    return render(request, 'usuarios/aluno/p1FACT.html', {'form': form})
+
 @login_required
 @professor_required
 def criar_equipe(request):
@@ -145,44 +116,59 @@ def criar_equipe(request):
         form.fields['turma'].queryset = Turma.objects.all()  # Ensure queryset is not None
     return render(request, 'usuarios/criar_equipe.html', {'form': form})
 
-@login_required
-@aluno_required
-def responder_avaliacao_fact(request, avaliacao_id):
-    avaliacao = get_object_or_404(AvaliacaoFACT, id=avaliacao_id)
-    if not avaliacao.esta_disponivel():
-        return redirect('aluno_home')
-    
-    criterios = ["Pensamento Crítico", "Comunicação", "Colaboração", "Qualidade", "Presença"]
-    if request.method == "POST":
-        form = ResponderAvaliacaoFACTForm(request.POST, criterios=criterios)
-        if form.is_valid():
-            for criterio in criterios:
-                RespostaFACT.objects.create(
-                    avaliacao=avaliacao,
-                    avaliador=request.user,
-                    avaliado=request.user, #Placeholder para quando integrar com equipes
-                    criterio=criterio,
-                    nota=form.cleaned_data[f'criterio_{criterio}'],
-                    justificativa=form.cleaned_data[f'justificativa_{criterio}'],
-                )
-            return redirect('aluno_home')
-    else:
-        form = ResponderAvaliacaoFACTForm(criterios=criterios)
-    return render(request, 'usuarios/aluno/p2FACT.html', {'form': form, 'avaliacao': avaliacao})
-    
+
+
 @login_required
 @professor_required
-def visualizar_resultados_fact(request, avaliacao_id):
-    avaliacao = get_object_or_404(AvaliacaoFACT, id=avaliacao_id)
-    respostas = avaliacao.respostas.all()
-    medias = {}
-    for resposta in respostas:
-        if resposta.avaliado not in medias:
-            medias[resposta.avaliado] = []
-        medias[resposta.avaliado].append(resposta.nota)
-    for avaliado in medias:
-        medias[avaliado] = sum(medias[avaliado]) / len(medias[avaliado])
-    return render(request, 'resultadosFACT.html', {'avaliacao': avaliacao, 'medias': medias, 'respostas': respostas})
+def visualizar_avaliacoes(request, turma_id):
+    turma = get_object_or_404(Turma, id=turma_id)
+    equipes = turma.equipes.all()
+    alunos_da_turma = turma.alunos.all()
+    avaliacoes = AvaliacaoFACT.objects.filter(avaliado__in=alunos_da_turma).select_related('avaliador', 'criterio')
+
+    alunos_avaliacoes = []
+    for aluno in alunos_da_turma:
+        avaliacoes_aluno = avaliacoes.filter(avaliador=aluno)
+        criterios_e_notas = []
+        for avaliacao in avaliacoes_aluno:
+            criterios_e_notas.append({
+                'criterio': avaliacao.criterio,
+                'nota': avaliacao.nota,
+            })
+            aluno_avaliado = avaliacao.avaliado
+            justificativas = avaliacao.justificativa
+        total_notas = sum(avaliacao.nota for avaliacao in avaliacoes_aluno)
+        total_integrantes = aluno.equipes.first().integrantes.count() - 1  # Total de integrantes menos 1
+        media = total_notas / total_integrantes if total_integrantes > 0 else None
+        alunos_avaliacoes.append({
+            'aluno': aluno,
+            'aluno_avaliado': aluno_avaliado,
+            'criterios_e_notas': criterios_e_notas,
+            'justificativas': justificativas,
+            'media': media
+        })
+
+
+    return render(request, 'usuarios/visualizar_avaliacoes.html', {
+        'turma': turma,
+        'equipes': equipes,
+        'alunos_avaliacoes': alunos_avaliacoes,
+    })
+
+
+
+@login_required
+@professor_required
+def listar_e_excluir_equipes(request):
+    equipes = Equipe.objects.all()
+
+    if request.method == 'POST':
+        equipe_id = request.POST.get('equipe_id')
+        equipe = get_object_or_404(Equipe, id=equipe_id)
+        equipe.delete()
+        return redirect('listar_e_excluir_equipes')
+
+    return render(request, 'usuarios/listar_e_excluir_equipes.html', {'equipes': equipes})
 
 def listar_turmas(request):
     turmas = Turma.objects.filter(professor=request.user)

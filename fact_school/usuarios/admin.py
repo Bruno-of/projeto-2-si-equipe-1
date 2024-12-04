@@ -3,6 +3,21 @@ from .models import Turma, User, Criterion
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
+from .models import AvaliacaoFACT, RespostaFACT
+
+class AvaliacaoFACTAdmin(admin.ModelAdmin):
+    list_display = ('avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
+    search_fields = ('avaliador__username', 'avaliado__username', 'criterio__name')
+    list_filter = ('criterio', 'nota')
+
+class RespostaFACTAdmin(admin.ModelAdmin):
+    list_display = ('avaliacao', 'avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
+    search_fields = ('avaliacao__avaliador__username', 'avaliacao__avaliado__username', 'criterio')
+    list_filter = ('criterio', 'nota')
+
+admin.site.register(AvaliacaoFACT, AvaliacaoFACTAdmin)
+admin.site.register(RespostaFACT, RespostaFACTAdmin)
 
 @admin.register(Criterion)
 class CriterionAdmin(admin.ModelAdmin):

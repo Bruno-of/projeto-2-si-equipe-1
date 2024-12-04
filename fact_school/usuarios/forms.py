@@ -3,44 +3,24 @@ from usuarios.models import AvaliacaoFACT, Turma, Equipe, Criterion
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 User = get_user_model()
-'''
-class EvaluationForm(forms.ModelForm):
-    evaluated = forms.ModelMultipleChoiceField(
-        queryset=User.objects.all(),  # Seleciona todos os usuários (alunos)
-        widget=forms.CheckboxSelectMultiple,  # Permite múltiplas seleções
-        label="Selecionar Alunos"
-    )
-    class Meta:
-        model = Evaluation
-        fields = ['evaluated', 'criterion', 'start_date', 'end_date']
 
-
-class EvaluationResponseForm(forms.ModelForm):
-    class Meta:
-        model = Evaluation
-        fields = ['score', 'justification']
-'''
-'''
-class CriarAvaliacaoFACTForm(forms.ModelForm):
-    class Meta:
-        model = AvaliacaoFACT
-        fields = ['turma', 'equipe', 'inicio', 'fim']
-'''
 class ResponderAvaliacaoFACTForm(forms.Form):
     def __init__(self, *args, criterios=None, **kwargs):
         super().__init__(*args, **kwargs)
         if criterios:
             for criterio in criterios:
                 self.fields[f'criterio_{criterio.id}'] = forms.IntegerField(
+                    #required=True,
                     label=criterio,
                     min_value=0,
                     max_value=criterio.max_score,
                 )
-                self.fields[f'justificativa_{criterio.id}'] = forms.CharField(
-                    required=False,
-                    widget=forms.Textarea,
-                    label=f'Justificativa para {criterio}',
-                )
+        self.fields['justificativa'] = forms.CharField(
+            #required=True,
+            required=False,
+            widget=forms.Textarea,
+            label=f'Justificativa',
+        )
 
 
 class CriarAvaliacaoFACTForm(forms.ModelForm):
