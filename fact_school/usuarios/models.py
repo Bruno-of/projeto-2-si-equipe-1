@@ -66,10 +66,32 @@ class AvaliacaoFACT(models.Model):
     def __call__(self):
         return f"{self.avaliador.username} -> {self.avaliado.username}: {self.criterio.name} ({self.nota})"
 
-class RespostaFACT(models.Model):
-    avaliacao = models.ForeignKey(AvaliacaoFACT, on_delete=models.CASCADE, related_name='respostas')
-    avaliador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='respostas_dadas')
-    avaliado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='respostas_recebidas')
-    criterio = models.CharField(max_length=100)
-    nota = models.PositiveIntegerField()
-    justificativa = models.TextField(blank = True, null = True)
+class RelatorioAvaliacao(models.Model):
+    avaliador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relatorios_avaliacoes_feitas')
+    avaliado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relatorios_avaliacoes_recebidas')
+    criterios_e_notas = models.JSONField()  
+    justificativas = models.JSONField()  
+    
+    def __str__(self):
+        return f"Relatório de Avaliação de {self.avaliador.username} para {self.avaliado.username}"
+    
+    def gerar_relatorio(self):
+        # Filtra as avaliações feitas pelo avaliador para o aluno avaliado
+        avaliacoes = AvaliacaoFACT.objects.filter(avaliador=self.avaliador, avaliado=self.avaliado)
+        criterios_e_notas = []
+        justificativas = {}
+
+        # Itera sobre as avaliações para esse par avaliador-avaliado
+        for avaliacao in avaliacoes:
+            criterios_e_notas.append({
+                'criterio': avaliacao.criterio.name,  # Nome do critério
+                'nota': avaliacao.nota,  # Nota do critério
+            })
+
+            justificativas['justificativa'] = avaliacao.justificativa
+
+
+        self.criterios_e_notas = criterios_e_notas
+        self.justificativas = justificativas
+        self.save()
+

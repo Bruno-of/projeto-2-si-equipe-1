@@ -4,43 +4,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
-from .models import AvaliacaoFACT, RespostaFACT
 
-class AvaliacaoFACTAdmin(admin.ModelAdmin):
-    list_display = ('avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
-    search_fields = ('avaliador__username', 'avaliado__username', 'criterio__name')
-    list_filter = ('criterio', 'nota')
-
-class RespostaFACTAdmin(admin.ModelAdmin):
-    list_display = ('avaliacao', 'avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
-    search_fields = ('avaliacao__avaliador__username', 'avaliacao__avaliado__username', 'criterio')
-    list_filter = ('criterio', 'nota')
-
-admin.site.register(AvaliacaoFACT, AvaliacaoFACTAdmin)
-admin.site.register(RespostaFACT, RespostaFACTAdmin)
 
 @admin.register(Criterion)
 class CriterionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'max_score')  
     search_fields = ('name',) 
-'''
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('criterion', 'min_score', 'max_score', 'description')  
-    list_filter = ('criterion',)
-    search_fields = ('criterion',)
-
-@admin.register(Evaluation)
-class EvaluationAdmin(admin.ModelAdmin):
-    list_display = ('evaluator', 'criterion', 'get_evaluated', 'start_date', 'end_date', 'is_available')
-    list_filter = ('evaluator', 'criterion')
-    search_fields = ('evaluator__username', 'evaluated__username', 'criterion__name')
-
-    def get_evaluated(self, obj):
-        return ', '.join([user.username for user in obj.evaluated.all()])
-    get_evaluated.short_description = 'Avaliados'
-'''
 
 User = get_user_model()
 
@@ -60,3 +30,20 @@ class TurmaAdmin(admin.ModelAdmin):
     raw_id_fields = ('professor','alunos')
 
 admin.site.register(User, CustomUserAdmin)
+
+from django.contrib import admin
+from .models import RelatorioAvaliacao
+
+class RelatorioAvaliacaoAdmin(admin.ModelAdmin):
+    # Defina os campos que você quer exibir no admin
+    list_display = ('avaliador', 'avaliado', 'get_criterios_e_notas')
+    search_fields = ('avaliador__username', 'avaliado__username')  # Permite buscar por nome do avaliador ou avaliado
+    
+    # Método para exibir os critérios e notas no admin de forma legível
+    def get_criterios_e_notas(self, obj):
+        # Exibe os critérios e notas de forma legível no admin
+        return ", ".join([f"{item['criterio']}: {item['nota']}" for item in obj.criterios_e_notas])
+    get_criterios_e_notas.short_description = "Critérios e Notas"  # Customiza o nome da coluna
+
+# Registra o modelo e o admin customizado
+admin.site.register(RelatorioAvaliacao, RelatorioAvaliacaoAdmin)

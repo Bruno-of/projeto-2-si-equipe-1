@@ -27,10 +27,98 @@
                 {% endfor %}
             </tbody>
         </table>
-
         <h2>Avaliações Individuais</h2>
         {% for equipe in equipes %}
-        <h3>Equipe: {{ equipe.name }}</h3>
+        <h3>Equipe: {{ equipe.Equipe }}</h3>
+        {% for integrante in equipe.integrantes.all %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2>Avaliações recebidas por {{ integrante.username }}</h2>
+            </div>
+            <div class="card-body">
+                {% for aluno_avaliacoes in alunos_avaliacoes %}
+                    {% if aluno_avaliacoes.aluno == integrante %}
+                        {% for relatorio in aluno_avaliacoes.relatorios %}
+                            <h4>Avaliador: {{ relatorio.avaliador.username }}</h4>
+                            <div>
+                                {% for item in relatorio.criterios_e_notas %}
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <strong>{{ item.criterio }}</strong>
+                                            <p class="text-muted">{{ item.criterio.description }}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Nota:</strong> {{ item.nota }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div>
+                                <strong>Justificativa:</strong>
+                                <p>{{ relatorio.justificativas.justificativa }}</p>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+        
+
+        <!-- Depois do relatório FACT(1o funcionando)-->
+         <!--
+        <h2>Avaliações Individuais</h2>
+
+        {% for equipe in equipes %}
+            <h3>Equipe: {{ equipe.Equipe }}</h3>
+            {% for integrante in equipe.integrantes.all %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h2>Avaliações de {{ integrante.username }}</h2>
+                    </div>
+                    <div class="card-body">
+                        {% for aluno_avaliacoes in alunos_avaliacoes %}
+                            {% if aluno_avaliacoes.aluno == integrante %}
+                                <div>
+                                    <h4>Aluno Avaliado: {{ aluno_avaliacoes.aluno_avaliado.username }}</h4>
+        
+                                    {% for item in aluno_avaliacoes.criterios_e_notas %}
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <strong>{{ item.criterio }}</strong>
+                                                <p class="text-muted">{{ item.criterio.description }}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p><strong>Nota:</strong> {{ item.nota }}</p>
+                                            </div>
+                                        </div>
+                                        {% if forloop.counter0 == 5 %}  
+                                            <div>
+                                                <strong>Justificativa:</strong>
+                                                <p>{{ aluno_avaliacoes.justificativas }}</p>
+                                            </div>
+                                            <hr>
+                                        {% endif %}
+                                    {% endfor %}
+        
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    -->
+        
+                    <!-- Antes do Relatório fact -->
+        <!--
+        <h2>Avaliações Individuais</h2>
+        {% for equipe in equipes %}
+        <h3>Equipe: {{ equipe.Equipe }}</h3>
         {% for integrante in equipe.integrantes.all %}
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -39,10 +127,17 @@
             <div class="card-body">
                 {% for aluno_avaliacoes in alunos_avaliacoes %}
                     {% if aluno_avaliacoes.aluno == integrante %}
-                        <h4>Aluno Avaliado: {{ aluno_avaliacoes.aluno_avaliado}}</h4>
-                        <h5>Critérios e Notas</h5>
                         <div>
+                            <h4>Aluno Avaliado: {{ aluno_avaliacoes.aluno_avaliado}}</h4>
                             {% for item in aluno_avaliacoes.criterios_e_notas %}
+                                {% if forloop.counter0 == 6 %}
+                                <div>
+                            <strong>Justificativa:</strong>
+                            <p>{{ aluno_avaliacoes.justificativas }}</p>
+                        </div>
+                                <hr>
+                                    <h4>Aluno Avaliado: {{ aluno_avaliacoes.aluno_avaliado}}</h4>
+                                {% endif %}
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <strong>{{ item.criterio.name }}</strong>
@@ -52,9 +147,9 @@
                                         <p><strong>Nota:</strong> {{ item.nota }}</p>
                                     </div>
                                 </div>
+                                
                             {% endfor %}
                         </div>
-                        <hr>
                         <div>
                             <strong>Justificativa:</strong>
                             <p>{{ aluno_avaliacoes.justificativas }}</p>
@@ -66,8 +161,7 @@
         </div>
     {% endfor %}
 {% endfor %}
-
-
     </div>
+    -->
 </body>
 </html>

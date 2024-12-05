@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import  AvaliacaoFACT, RespostaFACT, Turma, Equipe, Criterion
-from .forms import  CriarAvaliacaoFACTForm, CriarEquipeForm, ResponderAvaliacaoFACTForm
+from .models import  AvaliacaoFACT, Turma, Equipe, Criterion, RelatorioAvaliacao
+from .forms import CriarEquipeForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
 from django.utils.timezone import now
-from django.db import models
-import logging
+
 
 User = get_user_model()
 
@@ -98,6 +96,14 @@ def responder_fact(request, equipe_id):
                         nota=nota,
                         justificativa=justificativa,
                     )
+        
+        for integrante in integrantes:
+            relatorio = RelatorioAvaliacao(
+                avaliador=request.user,
+                avaliado=integrante,
+            )
+            relatorio.gerar_relatorio()
+
         return redirect('aluno_home')
     
     return render(request, 'usuarios/responder_fact.html', {'equipe': integrantes, 'criterios': criterios})
@@ -116,46 +122,43 @@ def criar_equipe(request):
         form.fields['turma'].queryset = Turma.objects.all()  # Ensure queryset is not None
     return render(request, 'usuarios/criar_equipe.html', {'form': form})
 
-
-
 @login_required
 @professor_required
 def visualizar_avaliacoes(request, turma_id):
     turma = get_object_or_404(Turma, id=turma_id)
     equipes = turma.equipes.all()
     alunos_da_turma = turma.alunos.all()
-    avaliacoes = AvaliacaoFACT.objects.filter(avaliado__in=alunos_da_turma).select_related('avaliador', 'criterio')
 
     alunos_avaliacoes = []
     for aluno in alunos_da_turma:
-        avaliacoes_aluno = avaliacoes.filter(avaliador=aluno)
+        relatorios = RelatorioAvaliacao.objects.filter(avaliado=aluno)
         criterios_e_notas = []
-        for avaliacao in avaliacoes_aluno:
-            criterios_e_notas.append({
-                'criterio': avaliacao.criterio,
-                'nota': avaliacao.nota,
-            })
-            aluno_avaliado = avaliacao.avaliado
-            justificativas = avaliacao.justificativa
-        total_notas = sum(avaliacao.nota for avaliacao in avaliacoes_aluno)
-        total_integrantes = aluno.equipes.first().integrantes.count() - 1  # Total de integrantes menos 1
-        media = total_notas / total_integrantes if total_integrantes > 0 else None
+        justificativas = {}
+        total_notas = 0
+        total_avaliadores = 0
+
+        for relatorio in relatorios:
+            criterios_e_notas.extend(relatorio.criterios_e_notas)
+            justificativas.update(relatorio.justificativas)
+            
+            nota_total_avaliador = sum(item['nota'] for item in relatorio.criterios_e_notas)
+            total_notas += nota_total_avaliador
+            total_avaliadores += 1
+            
+        media = (total_notas / total_avaliadores if total_avaliadores > 0 else None)/10
         alunos_avaliacoes.append({
             'aluno': aluno,
-            'aluno_avaliado': aluno_avaliado,
             'criterios_e_notas': criterios_e_notas,
             'justificativas': justificativas,
-            'media': media
+            'media': media,
+            'relatorios': relatorios
         })
-
 
     return render(request, 'usuarios/visualizar_avaliacoes.html', {
         'turma': turma,
         'equipes': equipes,
         'alunos_avaliacoes': alunos_avaliacoes,
     })
-
-
 
 @login_required
 @professor_required
@@ -169,6 +172,3 @@ def listar_e_excluir_equipes(request):
         return redirect('listar_e_excluir_equipes')
 
     return render(request, 'usuarios/listar_e_excluir_equipes.html', {'equipes': equipes})
-
-def listar_turmas(request):
-    turmas = Turma.objects.filter(professor=request.user)
