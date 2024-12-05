@@ -61,8 +61,9 @@ class CriarEquipeForm(forms.ModelForm):
         if 'turma' in self.data:
             try:
                 turma_id = int(self.data.get('turma'))
-                self.fields['alunos'].queryset =User.objects.filter(turmas_inscritas__id=turma_id, groups__name='Alunos').distinct()
-
+                self.fields['alunos'].queryset =User.objects.filter(
+                    turmas_inscritas__id=turma_id, groups__name='Alunos'
+                ).distinct()
             except (ValueError, TypeError):
                 self.fields['alunos'].queryset = User.objects.none()
         elif self.instance.pk:
@@ -70,7 +71,7 @@ class CriarEquipeForm(forms.ModelForm):
     class Meta:
         model = Equipe
         fields = ['Equipe', 'turma', 'alunos']
-
+    
     def save(self, commit=True):
         equipe = super().save(commit=False)
         if commit:

@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 
 class User(AbstractUser):
     is_adm = models.BooleanField(default=False)
-
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',  # Define um nome único para o reverso
@@ -36,6 +35,7 @@ class Turma(models.Model):
     name = models.CharField(max_length=100)
     professor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='turmas')
     alunos = models.ManyToManyField(User, related_name='turmas_inscritas')
+    
 
     def __str__(self):
         return self.name

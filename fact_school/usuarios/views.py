@@ -77,6 +77,7 @@ def professor_home(request):
     return render(request, 'usuarios/professor_home.html', {'turmas': turmas})
 
 
+
 #responder_fact TESTE
 def responder_fact(request, equipe_id):
     criterios = Criterion.objects.all() 
@@ -109,14 +110,27 @@ def criar_equipe(request):
     if request.method == 'POST':
         form = CriarEquipeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('professor_home')
+            turma = form.cleaned_data['turma']
+            equipes = form.save()
+            usuarios_disponiveis = User.objects.filter(turmas_inscritas=turma).exclude(equipes__isnull=False)
+
+            integrantes_selecionados = form.cleaned_data['alunos']
+            equipes.integrantes.set(integrantes_selecionados)
+
+            return redirect('professor_home')  
     else:
         form = CriarEquipeForm()
-        form.fields['turma'].queryset = Turma.objects.all()  # Ensure queryset is not None
+        form.fields['turma'].queryset = Turma.objects.all()
+
+        turma_id = request.GET.get('turma')
+        if turma_id:
+            turma = Turma.objects.get(id=turma_id)
+            usuarios_disponiveis = User.objects.filter(turmas_inscritas=turma).exclude(equipes__isnull=False)
+            form.fields['integrantes'].queryset = usuarios_disponiveis 
+        else:
+            usuarios_disponiveis = []
+
     return render(request, 'usuarios/criar_equipe.html', {'form': form})
-
-
 
 @login_required
 @professor_required

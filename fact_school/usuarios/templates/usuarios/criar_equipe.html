@@ -283,12 +283,31 @@ ul li {
             <h1>Defina a Equipe</h1>
             <div class="section">
                 {% csrf_token %}
-                {{ form.as_p }}
+                
+                <!-- Campo para o nome da equipe -->
+                <p>
+                    <label for="{{ form.Equipe.id_for_label }}">Equipe</label>
+                    {{ form.Equipe }}
+                </p>
+    
+                <!-- Campo para selecionar a turma -->
+                <p>
+                    <label for="{{ form.turma.id_for_label }}">Turma</label>
+                    {{ form.turma }}
+                </p>
+    
+                <!-- Campo para selecionar os alunos -->
+                <h3>Selecione os membros da equipe:</h3>
+                <p>
+                    <label for="{{ form.alunos.id_for_label }}">Alunos</label>
+                    {{ form.alunos }}
+                </p>
+    
             </div>
             <button type="submit">Salvar Equipe</button>
         </form>
     </div>
-
+    
     <style>
         
         body {
