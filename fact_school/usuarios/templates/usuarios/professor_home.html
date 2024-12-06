@@ -1,34 +1,25 @@
-
+{% extends 'usuarios/menuProf.html' %}
+{% block content %} {% load static %}
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professor - Página Inicial</title>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professor - Página Inicial</title>
-  </head>
-  <body>
-    
-    <div class="sidebar">
-        <h2>FACT School</h2>
-        <ul>
-            <li><a href="% url 'professor_home.html' %"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
-            <li><a href="#"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Turmas" /> Minhas turmas</a></li>
-            {% for turma in turmas %}
-            <li><a href="{% url 'visualizar_avaliacoes' turma.id %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="Visualizar Avaliações"> Visualizar Avaliações - {{ turma.name }}</a></li>
-            {% endfor %}
-            <li><a href="{% url 'criar_equipe' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" > Criar Equipes</a></li>
-            <li><a href="{% url 'listar_e_excluir_equipes' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/delete.png"> Listar e Excluir Equipes</a></li>
-            <li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li>
-        </ul>
-    </div>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Professor - Página Inicial</title>
+    </head>
+
+<body>
+
 
     <!--  principal -->
     <div class="main-content">
@@ -40,42 +31,28 @@
         <!-- bem vindo prof -->
         <div class="banner">
             <div>
-                <h2>Seja bem-vindo!</h2>
-                <p>Gerencie suas turmas e avaliações facilmente.</p>
-            </div>
-
-        </div>
-
-<h2>Suas turmas:</h2>
-        <!--turmas -->
-        <div class="class-cards">
-            <div class="class-card">
-                <h3>SI 2024.1</h3>
-                <span>2º Período</span>
-                <a href="#">See Details</a>
-            </div>
-            <div class="class-card">
-                <h3>SI 2024.1</h3>
-                <span>2º Período</span>
-                <a href="#">See Details</a>
-            </div>
-            <div class="class-card">
-                <h3>SI 2024.1</h3>
-                <span>2º Período</span>
-                <a href="#">See Details</a>
-            </div>
-            <div class="class-card">
-                <h3>SI 2024.1</h3>
-                <span>2º Período</span>
-                <a href="#">See Details</a>
-            </div>
+                <h2>Seja bem-vindo (a)!</h2>
+                <p>Gerencie suas avaliações facilmente.</p>
             </div>
         </div>
-    </div>
-  </body>
+
+        <h2>Suas turmas:</h2>
+
+
+        <div class="container mt-5">
+            <div class="class-cards">
+                {% for turma in turmas %}
+                <div class="class-card">
+                    <h3>{{ turma.name }}</h3>
+                    <span>{{ turma.periodo }}</span>
+                    <a href="{% url 'visualizar_avaliacoes' turma.id %}"> <h5>Ver Avaliações</h5> </a>
+                </div>
+                {% endfor %}
+</body>
+
+
 </html>
 <style>
-
     * {
         margin: 0;
         padding: 0;
@@ -88,53 +65,15 @@
         background-color: #f3f4f6;
         color: #333;
     }
-
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background: #1e1e5a;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        padding: 1rem;
+    h2{
+    
+        margin-bottom: 20px;
     }
-
-    .sidebar h2 {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
+    h5 {
+        font-size: 17px;
     }
-
-    .sidebar ul {
-        list-style: none;
-    }
-
-    .sidebar ul li {
-        margin: 1rem 0;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: #fff;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem;
-        border-radius: 5px;
-        transition: background 0.3s;
-    }
-
-    .sidebar ul li a:hover {
-        background: #f06115;
-    }
-
-    .sidebar ul li a img {
-        width: 20px;
-        height: 20px;
-    }
-
-    /*comeco */
+  
+    /*deixar mais harmonico lado direiro */
     .main-content {
         flex: 1;
         padding: 2rem;
@@ -178,15 +117,21 @@
 
     /*oi prof*/
     .banner {
-        background: #f06115;
-        color: #fff;
-        padding: 1.5rem;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 2rem;
-    }
+    background: #f06115;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    /*transition: transform 0.3s ease;*/ 
+}
+/*
+.banner:hover {
+    transform: scale(1.05);
+}
+*/
 
     .banner img {
         width: 100px;
@@ -196,44 +141,6 @@
     .banner h2 {
         font-size: 1.5rem;
         margin-bottom: 0.5rem;
-    }
-
-    .banner button {
-        background: #fff;
-        color: #f06115;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.3s;
-    }
-
-    .banner button:hover {
-        background: #ff7a30;
-    }
-
-    /* botoes */
-    .cursos {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-    }
-
-    .cursos button {
-        background: #1e1e5a;
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.3s;
-    }
-
-    .cursos button:hover {
-        background: #f06115;
     }
 
     .class-cards {
@@ -248,21 +155,7 @@
         padding: 1.5rem;
         border-radius: 8px;
         text-align: center;
-        transition: transform 0.3s;
-    }
-
-    .class-card:hover {
-        transform: scale(1.05);
-    }
-
-    .class-card h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .class-card span {
-        display: block;
-        margin-bottom: 0.5rem;
+        
     }
 
     .class-card a {
@@ -274,6 +167,6 @@
     }
 
     .class-card a:hover {
-        color: #ff7a30;
+        color: #bb1857;
     }
-</style>
+</style>{% endblock %}

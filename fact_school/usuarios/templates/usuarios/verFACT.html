@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<!-- Botão de Voltar -->
+<div class="voltar-container">
+    <button onclick="history.back();" class="btn btn-secondary" aria-label="Voltar para a página anterior">Voltar</button>
+</div>
+
+<!-- Critérios de Avaliação -->
+<div class="criterio-container">
+    <div class="criterio-header">1. Critério: Pensamento Crítico e Criatividade</div>
+    <div class="criterio-body">
+        <p>0 a 10: Nunca oferece ideias.</p>
+        <p>11 a 14: Oferece ideias básicas.</p>
+        <p>15 a 17: Sugere melhorias.</p>
+        <p>18 a 20: Sempre propõe soluções criativas.</p>
+    </div>
+</div>
+
+<div class="criterio-container">
+    <div class="criterio-header">2. Critério: Comunicação</div>
+    <div class="criterio-body">
+        <p>0 a 10: Não escuta os outros.</p>
+        <p>11 a 14: Escuta ocasionalmente.</p>
+        <p>15 a 17: Escuta com frequência.</p>
+        <p>18 a 20: Sempre escuta e contribui.</p>
+    </div>
+</div>
+
+<div class="criterio-container">
+    <div class="criterio-header">3. Critério: Colaboração</div>
+    <div class="criterio-body">
+        <p>0 a 10: Não ajuda o grupo.</p>
+        <p>11 a 14: Ajuda raramente.</p>
+        <p>15 a 17: Ajuda moderadamente.</p>
+        <p>18 a 20: Ajuda muito e facilita o trabalho.</p>
+    </div>
+</div>
+
+<div class="criterio-container">
+    <div class="criterio-header">4. Critério: Qualidade das Entregas</div>
+    <div class="criterio-body">
+        <p>0 a 10: Entregas incompletas.</p>
+        <p>11 a 14: Entregas com muitos erros.</p>
+        <p>15 a 17: Entregas aceitáveis.</p>
+        <p>18 a 20: Entregas impecáveis.</p>
+    </div>
+</div>
+
+<div class="criterio-container">
+    <div class="criterio-header">5. Critério: Presença</div>
+    <div class="criterio-body">
+        <p>0 a 3: Participação mínima.</p>
+        <p>4 a 6: Presença irregular.</p>
+        <p>7 a 8: Quase sempre presente.</p>
+        <p>9 a 10: Presente e pontual em tudo.</p>
+    </div>
+</div>
+
+<div class="criterio-container">
+    <div class="criterio-header">6. Critério: Entregas e Prazos</div>
+    <div class="criterio-body">
+        <p>0 a 3: Sempre atrasa.</p>
+        <p>4 a 6: Frequentemente atrasa.</p>
+        <p>7 a 8: Algumas vezes no prazo.</p>
+        <p>9 a 10: Sempre no prazo.</p>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .criterio-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .criterio-header {
+        background-color: #1e1e5a;
+        color: #fff;
+        padding: 15px 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .criterio-body {
+        padding: 20px;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .criterio-body p {
+        margin: 10px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #1e1e5a;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .voltar-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .criterio-container {
+            padding: 10px;
+        }
+
+        .criterio-header {
+            font-size: 16px;
+        }
+
+        .criterio-body {
+            font-size: 14px;
+        }
+
+        .btn {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    }
+</style>

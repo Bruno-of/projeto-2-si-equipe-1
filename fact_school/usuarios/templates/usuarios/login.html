@@ -1,4 +1,5 @@
 
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -16,15 +17,18 @@
     </div>
     <div class="right">
       <h2>Entre na sua conta:</h2>
-      <form method="post">
-        {% csrf_token %}
         <div class="logar">
+          {% if error %}
+          <p style="color: rgb(194, 0, 113);">{{ error }}</p>
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
           <input type="text" placeholder="nome@cesar.school" name="username" required />
         </div>
         <div class="logar">
           <input type="password" placeholder="Senha" name="password" required />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Logar</button>
       </form>
     </div>
   </div>

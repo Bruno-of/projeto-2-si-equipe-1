@@ -57,16 +57,29 @@ def dashboard(request):
 @login_required
 @aluno_required
 def aluno_home(request):
-    '''avaliacoes_disponiveis=AvaliacaoFACT.objects.filter(
-        turma__alunos=request.user,
-        inicio__lte=now(),
-        fim__gte=now()
-    ).distinct()'''
+    # Recuperando as turmas às quais o aluno pertence
+    turmas = request.user.turmas_inscritas.all()  # 'turmas_inscritas' é o related_name que você definiu no modelo Turma
+    # Recuperando as avaliações disponíveis para o aluno
     avaliacoes_disponiveis = AvaliacaoFACT.objects.filter(
         avaliado__in=request.user.equipes.values_list('integrantes', flat=True)
     ).distinct()
+    
     equipes = Equipe.objects.filter(integrantes=request.user)
-    return render(request, 'usuarios/aluno_home.html', {'avaliacoes' : avaliacoes_disponiveis, 'equipes':equipes},)
+    
+    # Passando as turmas, avaliações e equipes para o template
+    return render(request, 'usuarios/aluno_home.html', {
+        'avaliacoes': avaliacoes_disponiveis,
+        'equipes': equipes,
+        'turmas': turmas  # Passando as turmas para o template
+    })
+
+
+def verFACT(request):
+    return render(request, 'usuarios/verFACT.html')
+
+
+def equipe(request):
+    return render(request, 'usuarios/equipe.html')
     
 @login_required
 @professor_required

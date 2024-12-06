@@ -32,5 +32,7 @@ urlpatterns = [
     path('criar_equipe/', views.criar_equipe, name='criar_equipe'),
     path('visualizar_avaliacoes/<int:turma_id>/', views.visualizar_avaliacoes, name='visualizar_avaliacoes'),
     path('listar_e_excluir_equipes/', views.listar_e_excluir_equipes, name='listar_e_excluir_equipes'),
+    path('verFACT/', views.verFACT, name='verFACT'),
+    path('equipe/', views.equipe, name='equipe'),
 
 ]

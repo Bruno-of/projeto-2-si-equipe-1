@@ -22,12 +22,21 @@ class CustomUserAdmin(UserAdmin):
             professor_group, created = Group.objects.get_or_create(name="Professores")
             obj.groups.add(professor_group)
 
+from django.contrib import admin
+from .models import Turma
+
 @admin.register(Turma)
 class TurmaAdmin(admin.ModelAdmin):
     list_display = ('name', 'professor')
     list_filter = ('professor',)
     search_fields = ('name',)
-    raw_id_fields = ('professor','alunos')
+    
+    # Usando filter_horizontal para a relação ManyToMany com os alunos
+    filter_horizontal = ('alunos',)  # Mostra uma interface mais amigável para adicionar/remover alunos
+    
+    # Se você preferir usar raw_id_fields (menor lista de alunos):
+    # raw_id_fields = ('professor', 'alunos')  # Só para quando houver muitos alunos e você não quer a lista suspensa grande
+
 
 admin.site.register(User, CustomUserAdmin)
 
