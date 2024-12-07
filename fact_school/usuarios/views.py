@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import  AvaliacaoFACT, Turma, Equipe, Criterion, RelatorioAvaliacao
+from .models import  AvaliacaoFACT, Turma, Equipe, Criterion, RelatorioAvaliacao, DisponibilidadeAvaliacao
 from .forms import CriarEquipeForm, DisponibilizarAvaliacaoForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, get_user_model
@@ -57,20 +57,15 @@ def dashboard(request):
 @login_required
 @aluno_required
 def aluno_home(request):
-    # Recuperando as turmas às quais o aluno pertence
-    turmas = request.user.turmas_inscritas.all()  # 'turmas_inscritas' é o related_name que você definiu no modelo Turma
-    # Recuperando as avaliações disponíveis para o aluno
-    avaliacoes_disponiveis = AvaliacaoFACT.objects.filter(
-        avaliado__in=request.user.equipes.values_list('integrantes', flat=True)
-    ).distinct()
-    
+    turmas = request.user.turmas_inscritas.all()
     equipes = Equipe.objects.filter(integrantes=request.user)
-    
-    # Passando as turmas, avaliações e equipes para o template
+    now_time = now()
+    disponibilidades = DisponibilidadeAvaliacao.objects.filter(turma__in=turmas, inicio__lte=now_time, fim__gte=now_time)
+
     return render(request, 'usuarios/aluno_home.html', {
-        'avaliacoes': avaliacoes_disponiveis,
         'equipes': equipes,
-        'turmas': turmas  # Passando as turmas para o template
+        'turmas': turmas, 
+        'disponibilidades': disponibilidades,
     })
 
 @login_required
@@ -134,7 +129,7 @@ def criar_equipe(request):
             return redirect('professor_home')
     else:
         form = CriarEquipeForm()
-        form.fields['turma'].queryset = Turma.objects.all()  # Ensure queryset is not None
+        form.fields['turma'].queryset = Turma.objects.all()  
     return render(request, 'usuarios/criar_equipe.html', {'form': form})
 
 @professor_required

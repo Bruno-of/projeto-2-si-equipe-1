@@ -64,3 +64,14 @@ class AvaliacaoFACTAdmin(admin.ModelAdmin):
     list_filter = ('criterio', 'nota')
 
 admin.site.register(AvaliacaoFACT, AvaliacaoFACTAdmin)
+
+
+from django.contrib import admin
+from .models import DisponibilidadeAvaliacao
+
+class DisponibilidadeAvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ('turma', 'inicio', 'fim')
+    search_fields = ('turma__name',)
+    list_filter = ('turma', 'inicio', 'fim')
+
+admin.site.register(DisponibilidadeAvaliacao, DisponibilidadeAvaliacaoAdmin)
