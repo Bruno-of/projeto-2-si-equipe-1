@@ -106,10 +106,12 @@ Para compilar e executar a aplicação, siga os passos abaixo:
     ```bash
     cd fact_school
     ```
+    
 3. Crie um superuser:
-       ```bash
+   ```bash
     python manage.py createsuperuser
     ```
+   
 4. Inicie o Servidor do FACT:
     ```bash
     python manage.py runserver
