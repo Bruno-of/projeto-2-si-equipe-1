@@ -22,6 +22,9 @@ class User(AbstractUser):
         help_text='Permissões específicas para este usuário.',
         verbose_name='permissões de usuário'
     )
+
+    class Meta:
+        verbose_name_plural = "Usuários"
     
 class Criterion(models.Model):
     name = models.CharField(max_length=100)
@@ -30,6 +33,9 @@ class Criterion(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "Critérios"
 
 
 class Turma(models.Model):
@@ -60,6 +66,9 @@ class AvaliacaoFACT(models.Model):
 
     def __call__(self):
         return f"{self.avaliador.username} -> {self.avaliado.username}: {self.criterio.name} ({self.nota})"
+    
+    class Meta:
+        verbose_name_plural = "Avaliações Fact"
 
 class RelatorioAvaliacao(models.Model):
     avaliador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relatorios_avaliacoes_feitas')
@@ -69,6 +78,9 @@ class RelatorioAvaliacao(models.Model):
     
     def __str__(self):
         return f"Relatório de Avaliação de {self.avaliador.username} para {self.avaliado.username}"
+    
+    class Meta:
+        verbose_name_plural = "Relatórios de Avaliação"
     
     def gerar_relatorio(self):
         # Filtra as avaliações feitas pelo avaliador para o aluno avaliado
@@ -98,3 +110,6 @@ class DisponibilidadeAvaliacao(models.Model):
 
     def __str__(self):
         return f"Disponibilidade para {self.turma.name} de {self.inicio} a {self.fim}"
+    
+    class Meta:
+        verbose_name_plural = "Disponibilidades de Avaliação"

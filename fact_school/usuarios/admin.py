@@ -58,13 +58,6 @@ class RelatorioAvaliacaoAdmin(admin.ModelAdmin):
 admin.site.register(RelatorioAvaliacao, RelatorioAvaliacaoAdmin)
 
 
-class AvaliacaoFACTAdmin(admin.ModelAdmin):
-    list_display = ('avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
-    search_fields = ('avaliador__username', 'avaliado__username', 'criterio__name')
-    list_filter = ('criterio', 'nota')
-
-admin.site.register(AvaliacaoFACT, AvaliacaoFACTAdmin)
-
 
 from django.contrib import admin
 from .models import DisponibilidadeAvaliacao
