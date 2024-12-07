@@ -1,0 +1,168 @@
+{% load static %}
+<!-- Adicionando esta linha no topo do template para carregar arquivos estáticos -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aluno - Página Inicial</title>
+</head>
+<body>
+    <!-- Botão para abrir/fechar a sidebar em dispositivos móveis -->
+    <div class="sidebar-toggle">
+        <img src="https://img.icons8.com/ios-filled/50/menu.png" alt="Menu" />
+    </div>
+
+    <div class="sidebar">
+        <h2>FACT School</h2>
+        <ul>
+            <li><a href="{% url 'aluno_home' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
+            <li><a href="{% url 'equipe' %}"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Equipe" /> Minha equipe</a></li>
+            <li><a href="{% url 'login' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li> 
+        </ul>
+    </div>
+
+    <main>
+        {% block content %} {% endblock %}
+    </main>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        <p>&copy; 2024 FACT School - Todos os direitos reservados</p>
+    </footer>
+</body>
+
+</html>
+
+<style>/* Resetando margens e padding de todos os elementos */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* Estilo geral da página */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        background-color: #f3f4f6;
+        color: #000000;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+    
+    /* Conteúdo principal - faz a página crescer */
+    main {
+        flex: 1;
+        padding: 1rem;
+        margin-left: 250px; /* Margem padrão para conteúdo com sidebar fixa */
+    }
+    
+    /* Rodapé */
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #f1f1f1;
+    }
+    
+    /* Sidebar - navegação lateral */
+    .sidebar {
+        width: 250px;
+        background: #1e1e5a;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        position: fixed;
+        padding: 1rem;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Tamanho e espaçamento da sidebar */
+    .sidebar h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .sidebar ul {
+        list-style: none;
+    }
+    
+    .sidebar ul li {
+        margin: 1rem 0;
+    }
+    
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    
+    .sidebar ul li a:hover {
+        background: #f06115;
+    }
+    
+    .sidebar ul li a img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Para quando a sidebar for fechada em telas menores */
+    .sidebar-closed {
+        transform: translateX(-250px); /* Esconde a sidebar */
+    }
+    
+    /* Estilo do conteúdo principal */
+    main {
+        padding: 1rem;
+        margin-left: 250px; /* Começa com a sidebar aberta */
+    }
+    
+    /* Responsividade */
+    @media (max-width: 768px) {
+        /* Sidebar em dispositivos móveis */
+        .sidebar {
+            width: 200px;  /* Sidebar mais estreita */
+            position: absolute;
+            transform: translateX(-100%); /* Inicialmente escondida */
+        }
+    
+        .sidebar-open {
+            transform: translateX(0); /* Quando abrir a sidebar */
+        }
+    
+        /* Conteúdo principal em telas menores */
+        main {
+            margin-left: 0; /* Sem margem esquerda quando a sidebar estiver escondida */
+        }
+    
+        /* Botões ou links do menu para abrir e fechar a sidebar em dispositivos móveis */
+        .sidebar-toggle {
+            display: block;
+            font-size: 1.5rem;
+            color: #000000;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+    
+        .sidebar ul li a img {
+            width: 30px;
+            height: 30px;
+        }
+    
+        footer {
+            padding: 15px;
+        }
+    }
+    
+
+</style>

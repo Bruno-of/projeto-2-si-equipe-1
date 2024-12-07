@@ -1,0 +1,140 @@
+{% extends 'usuarios/menuProf.html' %}
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disponibilizar Avaliação</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> 
+</head>
+<body>
+  <div class="content">
+    <div class="evaluation-container">
+        <h4>Disponibilizar Avaliação</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-btn">Disponibilizar Avaliação</button>
+        </form>
+    </div>
+    </div>
+</body>
+</html>
+
+<style>
+  body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background: #e0e0e0;
+        }
+
+   
+    * {
+        margin: 0;
+        padding: 0;
+        
+    }
+    
+
+        label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            display: block;
+            
+            margin-top: 20px;
+        }
+.content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+.evaluation-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    
+}
+h4 { font-size: 1.8rem;
+    color: #000000;
+    margin-bottom: 1.5rem;
+
+}
+
+form {
+    background: #f7f7f7;
+    padding: 2rem;  
+    border-radius: 10px;
+    box-shadow: 0 4px 3rem rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin-top: 30px;
+}
+.custom-datetime {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+button.submit-btn {
+    background-color: #078f26;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button.submit-btn:hover {
+    background-color: #fea71b;
+}
+
+button.submit-btn:focus {
+    outline: 2px solid #888;
+}
+
+
+input[type="checkbox"] {
+        width: 20px; 
+        height: 20px; 
+        cursor: pointer; 
+    }
+
+    input[type="checkbox"]:focus {
+        outline: 2px solid #4CAF50; }
+
+    /*deixa o retangulo bonitinho*/
+    input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus, select:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); 
+        outline: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,150 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - FACT School</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="esquerda">
+      <img src="{% static 'img/capalogin.png' %}" alt="capa" />
+      <h1>FACT School</h1>
+    </div>
+    <div class="right">
+      <h2>Entre na sua conta:</h2>
+        <div class="logar">
+          {% if error %}
+          <p style="color: rgb(194, 0, 113);">{{ error }}</p>
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="text" placeholder="nome@cesar.school" name="username" required />
+        </div>
+        <div class="logar">
+          <input type="password" placeholder="Senha" name="password" required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #181063;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    display: flex;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+  }
+
+  .esquerda {
+    background-color: #1b1464;
+    color: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .esquerda img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  .esquerda h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .right {
+    background-color: #ff6f00;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .right h2 {
+    font-size: 1.8rem;
+    color: #000;
+    margin-bottom: 1rem;
+  }
+
+  .logar {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .logar label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    color: #333;
+  }
+
+  .logar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .logar input[type="text"],
+  .logar input[type="password"] {
+    background: #fff;
+    color: #000;
+  }
+
+  .logar input::placeholder {
+    color: #aaa;
+  }
+
+  button {
+    background: #000;
+    color: #ff6f00;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  button:hover {
+    background: #ffae42;
+  }
+
+</style>

@@ -1,0 +1,139 @@
+{% extends 'usuarios/menuAluno.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Integrantes da Equipe</title>
+    <script>
+        // Função para mostrar ou esconder os integrantes
+        function toggleIntegrantes(equipeId) {
+            var integrantes = document.getElementById('integrantes-' + equipeId);
+            if (integrantes.style.display === "none") {
+                integrantes.style.display = "block";
+            } else {
+                integrantes.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Visualizar Integrantes da Equipe</h1>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Turma</th>
+                    <th>Equipe</th>
+                    <th>Integrantes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipe in equipes %}
+                <tr>
+                    <td>{{ equipe.turma.name }}</td> 
+                    <td>{{ equipe.Equipe }}</td>  
+                    <td>
+                        <!-- Botão para ver os integrantes -->
+                        <button class="btn btn-info" onclick="toggleIntegrantes('{{ equipe.id }}')">
+                            Ver Integrantes
+                        </button>
+                    </td>
+                </tr>
+                <tr id="integrantes-{{ equipe.id }}" style="display: none;">
+                    <td colspan="3">
+                        <ul>
+                            {% for integrante in equipe.integrantes.all %}
+                            <li>{{ integrante.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+       
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            /* Centraliza horizontalmente */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Necessário para centralização vertical */
+            top: 50%;
+            /* Posição inicial 50% da altura */
+            transform: translateY(-50%);
+            margin-top: 9rem;
+        }
+
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .table thead {
+            background-color: #1e1e5a;
+            color: #fff;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-info {
+            background-color: #1e1e5a;
+            border: none;
+            color: white;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-info:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</body>
+</html>
+{% endblock %}

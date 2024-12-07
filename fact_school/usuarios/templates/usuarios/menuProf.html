@@ -1,0 +1,116 @@
+{% load static %}
+<!-- Adicionando esta linha no topo do template para carregar arquivos estáticos -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor - Página Inicial</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>FACT School</h2>
+        <ul>
+            <li><a href="{% url 'professor_home' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
+             <!--<li><a href="#"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Turmas" /> Minhas turmas</a></li> -->
+             
+            <li><a href="{% url 'criar_equipe' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" > Criar Equipes</a></li>
+            <li><a href="{% url 'listar_e_excluir_equipes' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/delete.png"> Ver e Excluir Equipes</a></li>
+            <li><a href="{% url 'evalProf' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" > Liberar FACT</a></li>
+            <li><a href="{% url 'login' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li> 
+        </ul>
+    </div>
+
+    <main>
+        {% block content %} {% endblock %}
+    </main>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        <p>&copy; 2024 FACT School - Todos os direitos reservados</p>
+    </footer>
+</body>
+
+</html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        background-color: #f3f4f6;
+        color: #333;
+        min-height: 100vh; 
+        flex-direction: column;
+  
+    }
+    main {
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f1f1f1;
+}
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: #1e1e5a;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        position: fixed; /* Sidebar fixa */
+        padding: 1rem;
+    }
+
+    .sidebar h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        margin: 1rem 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+        background: #f06115;
+    }
+
+    .sidebar ul li a img {
+        width: 20px;
+        height: 20px;
+    }
+
+    main {
+        flex-grow: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
+        padding: 1rem;
+        margin-left: 250px; /* Evita que o conteúdo sobreponha a sidebar */
+    }
+
+</style>

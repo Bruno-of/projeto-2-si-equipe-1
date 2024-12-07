@@ -1,0 +1,172 @@
+{% extends 'usuarios/menuProf.html' %}
+{% block content %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor - Página Inicial</title>
+
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Professor - Página Inicial</title>
+    </head>
+
+<body>
+
+
+    <!--  principal -->
+    <div class="main-content">
+        <!-- header -->
+        <div class="header">
+            <h1>Olá, Professor {{ user.username }}</h1>
+        </div>
+
+        <!-- bem vindo prof -->
+        <div class="banner">
+            <div>
+                <h2>Seja bem-vindo (a)!</h2>
+                <p>Gerencie suas avaliações facilmente.</p>
+            </div>
+        </div>
+
+        <h2>Suas turmas:</h2>
+
+
+        <div class="container mt-5">
+            <div class="class-cards">
+                {% for turma in turmas %}
+                <div class="class-card">
+                    <h3>{{ turma.name }}</h3>
+                    <span>{{ turma.periodo }}</span>
+                    <a href="{% url 'visualizar_avaliacoes' turma.id %}"> <h5>Ver Avaliações</h5> </a>
+                </div>
+                {% endfor %}
+</body>
+
+
+</html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        background-color: #f3f4f6;
+        color: #333;
+    }
+    h2{
+    
+        margin-bottom: 20px;
+    }
+    h5 {
+        font-size: 17px;
+    }
+  
+    /*deixar mais harmonico lado direiro */
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+        color: #444;
+    }
+
+    .header .search-bar {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .header input {
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .header .profile {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .header .profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    /*oi prof*/
+    .banner {
+    background: #f06115;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    /*transition: transform 0.3s ease;*/ 
+}
+/*
+.banner:hover {
+    transform: scale(1.05);
+}
+*/
+
+    .banner img {
+        width: 100px;
+        height: auto;
+    }
+
+    .banner h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .class-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .class-card {
+        background: #1e1e5a;
+        color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        
+    }
+
+    .class-card a {
+        color: #f06115;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    .class-card a:hover {
+        color: #bb1857;
+    }
+</style>{% endblock %}

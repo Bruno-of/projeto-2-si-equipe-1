@@ -1,0 +1,151 @@
+{% extends 'usuarios/menuProf.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar equipes</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+    <div class="content">
+        <form method="post">
+            <h1>Defina a Equipe</h1>
+            <div class="section">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+            <button type="submit">Salvar Equipe</button>
+        </form>
+    </div>
+
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background: #e0e0e0;
+        }
+
+
+    .section {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 700px;
+        text-align: left;
+    }
+
+    button {
+        display: block;
+        background: #4CAF50;
+        color: #fff;
+        font-size: 16px;
+        padding: 14px 20px;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin: 0 auto;
+        max-width: 300px;
+    }
+
+    button:hover {
+        background: #3e8e41;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+   
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        background-color: #f3f4f6;
+        color: #000000;
+    }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        form {
+            background: #f7f7f7;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 3rem rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 55rem;
+        }
+
+    input[type="checkbox"] {
+        width: 20px; 
+        height: 20px; 
+        cursor: pointer; 
+    }
+
+    input[type="checkbox"]:focus {
+        outline: 2px solid #4CAF50; }
+
+    /*deixa o retangulo bonitinho*/
+    input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus, select:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); 
+        outline: none;
+    }
+
+
+        h1 {
+            font-size: 24px;
+            color: #000000;
+            text-align: center;
+            /*background-color: #181063;
+            padding: 10px;*/
+
+
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #ffffff;
+            
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+</style>
+{% endblock %}
