@@ -44,7 +44,7 @@
                     <h3 class="card-title">{{ turma.name }}</h3>
                     <span class="badge bg-secondary mb-2">{{ turma.professor.username }}</span>
     
-
+                    
                     <ul class="list-group">
                         {% for equipe in equipes %}
                         <li class="list-group-item">
@@ -55,6 +55,12 @@
                         </li>
                         {% endfor %}
                     </ul>
+                    <!--
+                    {% if disponibilidades %}
+                    {% else %}
+                <p>Nenhuma avaliação disponível no momento.</p>
+            {% endif %}
+                    -->
 
                 </div>
             </div>

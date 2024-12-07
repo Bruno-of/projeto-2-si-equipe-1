@@ -1,8 +1,18 @@
 from django import forms
-from usuarios.models import AvaliacaoFACT, Turma, Equipe, Criterion
+from usuarios.models import AvaliacaoFACT, Turma, Equipe, Criterion, DisponibilidadeAvaliacao
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 User = get_user_model()
+
+
+class DisponibilizarAvaliacaoForm(forms.ModelForm):
+    turma = forms.ModelChoiceField(queryset=Turma.objects.all(), required=True, label="Turma")
+    inicio = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class':'custom-datetime'}), label="Início da Disponibilidade")
+    fim = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local',  'class': 'custom-datetime'}), label="Fim da Disponibilidade")
+    class Meta:
+        model = DisponibilidadeAvaliacao
+        fields = ['turma', 'inicio', 'fim']
+    
 
 class ResponderAvaliacaoFACTForm(forms.Form):
     def __init__(self, *args, criterios=None, **kwargs):
@@ -50,32 +60,32 @@ alunos_grupo = User.objects.filter(groups__name='alunos')
 
 
 class CriarEquipeForm(forms.ModelForm):
-    alunos = forms.ModelMultipleChoiceField(
-        queryset=User.objects.all(), 
-        widget=forms.CheckboxSelectMultiple,
-        required=True,
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'turma' in self.data:
-            try:
-                turma_id = int(self.data.get('turma'))
-                self.fields['alunos'].queryset =User.objects.filter(turmas_inscritas__id=turma_id, groups__name='Alunos').distinct()
-
-            except (ValueError, TypeError):
-                self.fields['alunos'].queryset = User.objects.none()
-        elif self.instance.pk:
-            self.fields['alunos'].queryset = self.instance.turma.alunos.filter(groups__name='alunos').distinct()
-    class Meta:
-        model = Equipe
-        fields = ['Equipe', 'turma', 'alunos']
-
-    def save(self, commit=True):
-        equipe = super().save(commit=False)
-        if commit:
-            equipe.save()
-            self.save_m2m()
-            equipe.integrantes.set(self.cleaned_data['alunos'])
-        return equipe
     
+        alunos = forms.ModelMultipleChoiceField(
+            queryset=User.objects.all(), 
+            widget=forms.CheckboxSelectMultiple,
+            required=True,
+        )
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            if 'turma' in self.data:
+                try:
+                    turma_id = int(self.data.get('turma'))
+                    self.fields['alunos'].queryset =User.objects.filter(turmas_inscritas__id=turma_id, groups__name='Alunos').distinct()
+
+                except (ValueError, TypeError):
+                    self.fields['alunos'].queryset = User.objects.none()
+            elif self.instance.pk:
+                self.fields['alunos'].queryset = self.instance.turma.alunos.filter(groups__name='alunos').distinct()
+        class Meta:
+            model = Equipe
+            fields = ['Equipe', 'turma', 'alunos']
+
+        def save(self, commit=True):
+            equipe = super().save(commit=False)
+            if commit:
+                equipe.save()
+                self.save_m2m()
+                equipe.integrantes.set(self.cleaned_data['alunos'])
+            return equipe

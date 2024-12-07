@@ -2,6 +2,7 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,6 +32,7 @@
         }
     </script>
 </head>
+
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Visualizar e Excluir Equipes</h1>
@@ -39,7 +41,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Turma </th>
-                    <th>Equipe</th> 
+                    <th>Equipe</th>
                     <th>Ações</th>
                     <th>Integrantes</th>
                 </tr>
@@ -47,10 +49,11 @@
             <tbody>
                 {% for equipe in equipes %}
                 <tr>
-                    <td>{{ equipe.turma.name }}</td> 
-                    <td>{{ equipe.Equipe }}</td>  
+                    <td>{{ equipe.turma.name }}</td>
+                    <td>{{ equipe.Equipe }}</td>
                     <td>
-                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ equipe.id }}')">Excluir</button>
+                        <button type="button" class="btn btn-danger"
+                            onclick="confirmDelete('{{ equipe.id }}')">Excluir</button>
                     </td>
                     <td>
                         <!--ver membros da equipe -->
@@ -91,14 +94,23 @@
             background-color: #f4f6f9;
         }
 
+
         .container {
             max-width: 900px;
-            margin-top: 30px;
+            margin: 30px auto;
+            /* Centraliza horizontalmente */
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Necessário para centralização vertical */
+            top: 50%;
+            /* Posição inicial 50% da altura */
+            transform: translateY(-50%);
+            margin-top: 9rem;
         }
+
 
         h1 {
             font-size: 28px;
@@ -112,7 +124,8 @@
             width: 100%;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             text-align: center;
             padding: 12px;
             font-size: 16px;
@@ -193,21 +206,26 @@
         }
 
         /* Melhora o espaçamento */
-        .table td, .table th {
+        .table td,
+        .table th {
             padding: 1rem;
         }
 
         /* Responsividade para dispositivos móveis */
         @media (max-width: 768px) {
-            .table th, .table td {
+
+            .table th,
+            .table td {
                 font-size: 14px;
             }
 
             .container {
                 padding: 15px;
+
             }
         }
     </style>
 </body>
+
 </html>
 {% endblock %}

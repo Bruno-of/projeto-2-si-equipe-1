@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import  AvaliacaoFACT, Turma, Equipe, Criterion, RelatorioAvaliacao
-from .forms import CriarEquipeForm
+from .forms import CriarEquipeForm, DisponibilizarAvaliacaoForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import AuthenticationForm
@@ -73,13 +73,15 @@ def aluno_home(request):
         'turmas': turmas  # Passando as turmas para o template
     })
 
-
+@login_required
 def verFACT(request):
     return render(request, 'usuarios/verFACT.html')
 
-
+@login_required
+@aluno_required
 def equipe(request):
-    return render(request, 'usuarios/equipe.html')
+    equipes = Equipe.objects.filter(integrantes=request.user)
+    return render(request, 'usuarios/equipe.html', {'equipes': equipes})
     
 @login_required
 @professor_required
@@ -134,6 +136,19 @@ def criar_equipe(request):
         form = CriarEquipeForm()
         form.fields['turma'].queryset = Turma.objects.all()  # Ensure queryset is not None
     return render(request, 'usuarios/criar_equipe.html', {'form': form})
+
+@professor_required
+@login_required
+def make_available(request):
+    if request.method == "POST":
+        form = DisponibilizarAvaliacaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('professor_home')  
+    else:
+        form = DisponibilizarAvaliacaoForm()
+    return render(request, 'usuarios/evalProf.html', {'form': form})
+
 
 @login_required
 @professor_required

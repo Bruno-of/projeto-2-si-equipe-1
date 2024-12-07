@@ -20,15 +20,7 @@
         <ul>
             <li><a href="{% url 'aluno_home' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/home.png" alt="Home" /> Home</a></li>
             <li><a href="{% url 'equipe' %}"><img width="60" height="60" src="https://img.icons8.com/ios-filled/50/auditorium--v1.png" alt="Equipe" /> Minha equipe</a></li>
-            {% for equipe in equipes %}
-            <li>
-                <a href="{% url 'responder_fact' equipe.id %}">
-                    <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/email-open.png" alt="FACT">
-                    Responder FACT {{ equipe.Equipe }}
-                </a>
-            </li>
-            {% endfor %}
-            <!--<li><a href="#"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li>-->
+            <li><a href="{% url 'login' %}"><img width="50" height="50" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit"/> Sair </a></li> 
         </ul>
     </div>
 

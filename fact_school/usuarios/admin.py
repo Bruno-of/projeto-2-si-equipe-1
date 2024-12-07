@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Turma, User, Criterion
+from .models import Turma, User, Criterion, AvaliacaoFACT
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
@@ -56,3 +56,11 @@ class RelatorioAvaliacaoAdmin(admin.ModelAdmin):
 
 # Registra o modelo e o admin customizado
 admin.site.register(RelatorioAvaliacao, RelatorioAvaliacaoAdmin)
+
+
+class AvaliacaoFACTAdmin(admin.ModelAdmin):
+    list_display = ('avaliador', 'avaliado', 'criterio', 'nota', 'justificativa')
+    search_fields = ('avaliador__username', 'avaliado__username', 'criterio__name')
+    list_filter = ('criterio', 'nota')
+
+admin.site.register(AvaliacaoFACT, AvaliacaoFACTAdmin)

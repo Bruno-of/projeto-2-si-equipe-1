@@ -57,11 +57,6 @@ class AvaliacaoFACT(models.Model):
     criterio = models.ForeignKey(Criterion, on_delete=models.CASCADE, default=None)
     nota = models.PositiveIntegerField(default=0)
     justificativa = models.TextField(blank = True, null = True, default=None)
-    #inicio = models.DateTimeField()
-    #fim = models.DateTimeField()
-
-    #def esta_disponivel(self):
-        #return self.inicio <= now() <= self.fim
 
     def __call__(self):
         return f"{self.avaliador.username} -> {self.avaliado.username}: {self.criterio.name} ({self.nota})"
@@ -95,3 +90,11 @@ class RelatorioAvaliacao(models.Model):
         self.justificativas = justificativas
         self.save()
 
+
+class DisponibilidadeAvaliacao(models.Model):
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE, related_name='disponibilidades')
+    inicio = models.DateTimeField()
+    fim = models.DateTimeField()
+
+    def __str__(self):
+        return f"Disponibilidade para {self.turma.name} de {self.inicio} a {self.fim}"

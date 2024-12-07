@@ -6,11 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>FACT</title>
 </head>
 
 <body>
+
 
         <!-- Main Content -->
         <div class="flex-grow-1 p-4">
@@ -20,70 +21,104 @@
             <form method="post">
                 {% csrf_token %}
                 {% for avaliado in equipe %}
-                <div class="card mb-4 shadow border-0">
+                <div class="card mb-4 shadow border-0" style="max-width: 60rem; margin: 0 auto;">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0 text-center">{{ avaliado.username }}</h2>
+                        <h2 class="mb-0 text-center" style="font-size: 1.2rem;">{{ avaliado.username }}</h2>
                     </div>
                     <div class="card-body">
                         {% for criterio in criterios %}
-                        <div class="row mb-4">
+                        <div class="row mb-3">
                             <div class="col-md-6">
-                                <h5 class="fw-bold">{{ criterio.name }}</h5>
-                                <p class="text-muted small">{{ criterio.description }}</p>
+                                <h5 class="fw-bold" style="font-size: 1rem;">{{ criterio.name }}</h5>
+                                <p class="text-muted small" style="font-size: 0.9rem;">{{ criterio.description }}</p>
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
                                 <input type="range" name="nota_{{ avaliado.id }}_{{ criterio.id }}"
                                     id="nota_{{ avaliado.id }}_{{ criterio.id }}" min="0" max="{{ criterio.max_score }}"
-                                    step="1" value="0" class="form-range me-3"
+                                    step="1" value="0" class="form-range me-3 required-field"
+                                    style="width: 50%; height: 8px;"
                                     oninput="document.getElementById('nota_display_{{ avaliado.id }}_{{ criterio.id }}').innerText = this.value">
-                                <span class="badge bg-primary p-2">Nota: <span
+                                <span class="badge bg-primary p-2" style="font-size: 0.9rem;">Nota: <span
                                         id="nota_display_{{ avaliado.id }}_{{ criterio.id }}">0</span></span>
                             </div>
                         </div>
                         {% endfor %}
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="justificativa_{{ avaliado.id }}" class="form-label">Justificativa</label>
+                                <label for="justificativa_{{ avaliado.id }}" class="form-label" style="font-size: 1rem;">Justificativa</label>
                                 <textarea name="justificativa_{{ avaliado.id }}" id="justificativa_{{ avaliado.id }}"
-                                    rows="3" class="form-control"></textarea>
+                                    rows="3" class="form-control required-field" style="font-size: 0.9rem;"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-                <div class="text-center">
-                    <button type="submit" class="btn btn-success">Enviar Avaliação</button>
-                    <a href="{% url 'aluno_home' %}" class="btn btn-secondary">Voltar</a>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success" style="font-size: 1rem; padding: 8px 20px;">Enviar Avaliação</button>
+                    <a href="{% url 'aluno_home' %}" class="btn btn-secondary" style="font-size: 1rem; padding: 8px 20px;">Voltar</a>
                 </div>
             </form>
         </div>
     </div>
+
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('avaliacaoForm');
+        const submitButton = document.getElementById('submitButton');
 
+        // Function to check if all required fields are filled
+        function isFormComplete() {
+            const requiredFields = form.querySelectorAll('.required-field');
+            for (let field of requiredFields) {
+                // For ranges, ensure value is not "0"
+                if (field.type === 'range' && field.value === '0') {
+                    return false;
+                }
+                // For textareas, ensure they're not empty
+                if (field.tagName === 'TEXTAREA' && field.value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-
+        // Add an event listener to monitor changes in the form
+        form.addEventListener('input', function () {
+            if (isFormComplete()) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+    });
+</script> 
 <style>
-
-
     h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;  /* Tamanho reduzido do título */
     }
 
     .card-header {
-        font-size: 15px;
+        font-size: 1rem;
         text-align: center;
-        background: #f06115 !important; 
-
+        background: #f06115 !important;
         color: #fff;
     }
 
     .form-range {
-        width: 70%;
-        height: 10px;
+        width: 100%;
+        height: 8px;
         background-color: #d0cdcd;
         border-radius: 5px;
         outline: none;
+        transition: background 0.2s ease-in-out;
+    }
+    
+    .form-range::-webkit-slider-runnable-track {
+        height: 8px;
+        background-color: #d0cdcd;
+        border-radius: 5px;
     }
 
     .form-range::-webkit-slider-thumb {
@@ -96,45 +131,22 @@
 
     .badge {
         font-size: 0.9rem;
-        padding: 5px 10px;
+        
         background-color: #f86824 !important;
     }
 
-    textarea {
-        resize: vertical;
+    .form-control {
+        font-size: 0.9rem; /* Ajusta a fonte para menor */
     }
 
     .btn {
-        padding: 10px 20px;
-        font-size: 1rem;
+      
+        font-size: 0.9rem; /* Ajusta o tamanho da fonte dos botões */
         border-radius: 5px;
-    }
-
-    .form-range::-webkit-slider-thumb {
-        width: 20px;
-        height: 20px;
-        background: #f86824ff;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .form-range:focus {
-        outline: none;
-        box-shadow: 0 0 5px rgba(144, 156, 170, 0.5);
-    }
-
-
-
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-        margin: 10px 5px;
     }
 
     button:hover {
         background-color: #3e8e41;
     }
 </style>
-{% endblock%}
+{% endblock %}
