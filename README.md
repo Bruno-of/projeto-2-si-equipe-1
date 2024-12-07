@@ -94,6 +94,13 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Pesquisa de soluções similares.
 - Design de slides.
 
+## Screeancast
+
+
+https://github.com/user-attachments/assets/bcc06ddd-3d71-4709-ad6a-294b28fe48ac
+
+
+
 ## Como Executar
 Para compilar e executar a aplicação, siga os passos abaixo:
 
