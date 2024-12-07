@@ -94,6 +94,13 @@ Nosso time é composto por oito membros, cada um trazendo um conjunto único de 
 - Pesquisa de soluções similares.
 - Design de slides.
 
+## Screeancast
+
+
+https://github.com/user-attachments/assets/bcc06ddd-3d71-4709-ad6a-294b28fe48ac
+
+
+
 ## Como Executar
 Para compilar e executar a aplicação, siga os passos abaixo:
 
@@ -106,8 +113,13 @@ Para compilar e executar a aplicação, siga os passos abaixo:
     ```bash
     cd fact_school
     ```
-
-3. Inicie o Servidor do FACT:
+    
+3. Crie um superuser:
+   ```bash
+    python manage.py createsuperuser
+    ```
+   
+4. Inicie o Servidor do FACT:
     ```bash
     python manage.py runserver
     ```
